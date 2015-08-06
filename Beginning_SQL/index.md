@@ -1,0 +1,8 @@
+---
+layout: default
+title: Stanford Data Management Services Workshops
+---
+    		<div class="blurb">
+        		<h1>Workshops</h1>
+				<p>This site contains information and course details for workshops offered by Amy Hodge at Stanford University Libraries.</a></p>
+				</div><!-- /.blurb -->
