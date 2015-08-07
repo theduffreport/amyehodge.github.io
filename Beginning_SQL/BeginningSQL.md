@@ -3,9 +3,8 @@
 This workshop will teach the basics of working with and querying structured data in a database environment. This workshop uses the SQLite plugin for Firefox. We will provide laptops with the correct software for the workshop. If you bring your own machine to the workshop, you must have the software installed in advance. 
 
 ##Software Installation
-```
-If you are using one of the Library's laptops, skip this section.
-```
+
+> If you are using one of the Library's laptops, skip this section.
 
 1. [Download Firefox] (https://www.mozilla.org/en-US/firefox/new/) and install it.
 2. Download and install the SQLite Manager add on: **Menu (the three horizontal lines near the
