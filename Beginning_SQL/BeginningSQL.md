@@ -4,7 +4,7 @@ This workshop will teach the basics of working with and querying structured data
 
 ##Software Installation
 
-> If you are using one of the Library's laptops, skip this section.
+> *If you are using one of the Library's laptops, skip this section.*
 
 1. [Download Firefox] (https://www.mozilla.org/en-US/firefox/new/) and install it.
 2. Download and install the SQLite Manager add on: **Menu (the three horizontal lines near the
