@@ -1,16 +1,17 @@
-Workshop: Beginning SQL
-=======================
+#Workshop: Beginning SQL
 
-Setup
------
+This workshop will teach the basics of working with and querying structured data in a database environment. This workshop uses the SQLite plugin for Firefox. We will provide laptops with the correct software for the workshop. If you bring your own machine to the workshop, you must have the software installed in advance. 
 
-1. Install Firefox
+##Software Installation
+_If you are using one of the Library's laptops, skip this section._
+
+1. Install Firefox. You can download the software from https://www.mozilla.org/en-US/firefox/new/
 2. Install the SQLite Manager add on: **Menu (the three horizontal lines near the
 top right corner of Firefox) -> Add-ons -> Search -> SQLite
 Manager -> Install -> Restart now**
-3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite)
 4. Add SQLite Manager to the menu: **Menu -> Customize, then drag the SQLite
    Manager icon to one of the empty menu squares on the right, Exit Customize**
+3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite)
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
 
