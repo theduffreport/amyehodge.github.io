@@ -1,797 +1,461 @@
-# amyehodge.github.io
 Workshop: Beginning SQL
 =======================
 
-###How to use various Web APIs and OpenRefine for geocoding and augmenting data with geographic attributes. 
-
-###Getting Ready for the Tutorial 
-This tutorial will demonstrate how to use OpenRefine to submit URLs to web-based Geocoding APIs in order to augment an existing dataset with things like latitude & longitude coordinates, elevation values, drive times, etc...
-
-OpenRefine is a piece of open-source software that allows you to manipulate data in many different ways. It's not just great for geocoding and augmenting datasets, but is really great for cleaning up 'dirty' data, too. 
-
-For the needs of this tutorial, OpenRefine allows us to build and submit URLs to a web service (like a geocoding API) over and over tens, hundreds, even thousands or more times, saving us the trouble of typing a URL into a browser and copy&pasting values, one at a time. OpenRefine runs in your browser, but does so locally by installing itself as a sort of server running on your own machine.  OpenRefine used to be called GoogleRefine, but has recently been re-branded, so much of the support materials you will find on-line will still refer to GoogleRefine.  
-
-![Open Refine Logo] (http://opensas.files.wordpress.com/2013/06/logo-openrefine-40.png)
-
-You will, of course, need to download OpenRefine in order to complete this tutorial. You can get the appropriate version for your operating system from [OpenRefine.org] (http://openrefine.org/). In the meantime, there are 3 videos on the OpenRefine frontpage. You should take a look at all three, because they give a great, concise overview of many of the capabilities of OpenRefine. For the purposes of this tutorial, it wouldn't hurt to watch the 3rd video, linked here:
-
-http://www.youtube.com/watch?feature=player_embedded&v=5tsyz3ibYzk
-
-You might also want to take a look at this page on "___Understanding Expressions___" in OpenRefine:
-
-https://github.com/OpenRefine/OpenRefine/wiki/Understanding-Expressions
-
-And, here's the full Documentation Wiki:
-
-https://github.com/OpenRefine/OpenRefine/wiki/Documentation-For-Users
-
-
-## What is an [Geocoding] API?
-An API (Application Programming Interface) is, essentially, a set of instructions that allows computer programs to pass data back and forth.  In the following exercises, we will be using several Web APIs.  The Web APIs we will use allow you to submit a URL just like when you type a URL into your browser address bar.  The important difference is that the URL we are submitting has a bit of data (an address or coordinate pair) that we want to know something about. Rather than giving us back an HTML file that instructs our browser to retrieve images, text and other object and arrange them into a webpage, the Web APIs we will be using give us back information about the address/coordinate pair we submitted.  
-
-### Submitting a URL
-Here’s the basic structure of one of the URLs you will submit to the one of the Web APIs we will be working with:
-
-```
-http://www.museum.tulane.edu/webservices/geolocatesvcv2/glcwrap.aspx?Country=USA&Locality=bogalusa&state=la&fmt=JSON
-```
-
-From the sample above:
-```
-http://www.museum.tulane.edu/webservices/geolocatesvcv2/glcwrap.aspx?
-``` 
-...is the base URL of the (Geolocate Search API) [http://www.museum.tulane.edu/geolocate/]...
-
-```
-Country=USA&Locality=bogalusa&state=la&fmt=JSON
-```
-...are the parameters of the search. In this case, there are four basic parameters to the search...
-
-```
-Country=USA
-```
-...this first **parameter** indicates to the Geolocate API what country the placename you are searching for is in.  This is a **required** parameter in the Geolocate API.
-
-```
-&Locality=bogalusa
-```
-...this is the **placename** you are searching for.
-```
-&state=la
-```
-...this is the name of the state that the locality you are looking for is in. In the Geolocate API, this is a required parameter if you are searching for placenames within the USA.
-
-```
-&fmt=JSON
-```
-...this parameter indicates the type of output you would like to get back from the Geolocate API. Currently, the Geolocate API is able to return JSON or GeoJSON.  We will discuss these formats, and their differences, later. 
-
-Here are the rest of the supported parameters from the Geolocate API:
-
-![Geolocate API Parameters](/images/Geolocate_API_Parameters.png)
-
-### Getting back JSON
-For the time being, try submitting the above search to the Geolocate API by clicking on this link:
-
-http://www.museum.tulane.edu/webservices/geolocatesvcv2/glcwrap.aspx?Country=USA&Locality=bogalusa&state=la&fmt=JSON
-
-What you get back should look like this (_sans_ the fancy syntax highlighting Github does):
-```JSON
-{
-"engineVersion" : "GLC:4.93|U:1.01374|eng:1.0",
-"numResults" : 1,
-"executionTimems" : 109.2002,
-"resultSet" : { "type": "FeatureCollection",
-"features": [
-{ "type": "Feature",
-"geometry": {"type": "Point", "coordinates": [-89.84861, 30.79083]},
-"properties": {
-"parsePattern" : "BOGALUSA",
-"precision" : "High",
-"score" : 83,
-"uncertaintyRadiusMeters" : 4490,
-"uncertaintyPolygon" : "Unavailable",
-"displacedDistanceMiles" : 0,
-"displacedHeadingDegrees" : 0,
-"debug" : ":GazPartMatch=False|:inAdm=True|:Adm=WASHINGTON|:NPExtent=7455|:NP=BOGALUSA|:KFID=LA:ppl:9064|BOGALUSA"
-}
-}
- ],
-"crs": { "type" : "EPSG", "properties" : { "code" : 4326 }}
-}
-}
-{
-"engineVersion" : "GLC:4.93|U:1.01374|eng:1.0",
-"numResults" : 1,
-"executionTimems" : 109.2002,
-"resultSet" : { "type": "FeatureCollection",
-"features": [
-{ "type": "Feature",
-"geometry": {"type": "Point", "coordinates": [-89.84861, 30.79083]},
-"properties": {
-"parsePattern" : "BOGALUSA",
-"precision" : "High",
-"score" : 83,
-"uncertaintyRadiusMeters" : 4490,
-"uncertaintyPolygon" : "Unavailable",
-"displacedDistanceMiles" : 0,
-"displacedHeadingDegrees" : 0,
-"debug" : ":GazPartMatch=False|:inAdm=True|:Adm=WASHINGTON|:NPExtent=7455|:NP=BOGALUSA|:KFID=LA:ppl:9064|BOGALUSA"
-}
-}
- ],
-"crs": { "type" : "EPSG", "properties" : { "code" : 4326 }}
-}
-}
-```
-##What is JSON?
-For our purposes, we don't really need to go deeply into what JSON (JavaScript Object Notation) is. It is enough for you to know that it is a format for storing and exchanging data in human readable text format and that it is an output format for all of the APIs we will use, as well as most web-based data APIs.
-###Making sense of JSON
-OK, so that JSON we got back might be a little intimidating if you aren't used to looking at code, but if you just bend your knees and take a deep breath, then look closely, you will see that there is actually some useful information in there! In fact, if what we are doing is geocoding placenames, it's got exactly what we need on the line that begins with **"geometry":**
-```
-"geometry": {"type": "Point", "coordinates": [-89.84861, 30.79083]},
-```
-**See them!? There are longitude/latitude coordinates in there! That's what we are after!**  You can make the JSON data even more readable with http://jsonviewer.stack.hu/. 
-
-Copy&Paste the JSON from the example we clicked earlier into the http://jsonviewer.stack.hu/ text tab and click on the Format Button in the Main Menu. Then switch to the Viewer Tab...
-
-![JSONViewer Collapsed] (/images/JSONViewerCollapsed.png)
-
-Then, Expand all of the elements in the hierarchy so that you have something that looks like this:
-
-![JSONViewer Collapsed] (/images/JSONViewerExpanded.png)
-
-You can see that the latitude and longitude coordinates are under the coordinates object. If you track back through the hierarchy from the coordinates object, you will find that the address of the longitude coordinate [-89.84861] is:
-
-```
-resultSet.features[0].geometry.coordinates[0]
-```
-
-
-#Geolocate Tulane
-###Limits
-There are no licensing restrictions on the Tulane Geolocate service. The API can be used for any geocoding purpose and for any amount of data. That said, the service does have some technical limitations. I have observed that a more stable result is achieved when using no more than 5 requests per second. Another thing to consider is the purpose for which Geolocate was created. Geolocate is very good at geocoding to administrative boundaries, but was not designed to geocode street addresses, so if that is what you have, you will have to use an alternative service.
-
-Here are the Geolocate Parameters, once again:
-
-![JSONViewer Collapsed] (/images/Geolocate_API_Parameters.png)
-
-Most of these are fairly straightforward. The ones that most concern us  for the current tutorial are the following:
-
-  __locality__ - This is the "address" or placename you are actually looking for. Geolocate is actually built to handle fairly esoteric localities (like "3 miles north of the confluence of the X and Y rivers").
-  
-  __country__ - This is the country that your locality is in. This is a required parameter for all Geolocate Searches.
-  
-  __state__ - This is listed as an optional parameter in the Geolocate JSON Wrapper DOc, but it is __REQUIRED__ if you are geocoding data within the United States and set your 'country=USA'.
-  
-  
-###API Overview
-
-Again, here’s the basic structure of the URLs you will submit to the Geolocate JSON Wrapper Web API:
-
-```
-http://www.museum.tulane.edu/webservices/geolocatesvcv2/glcwrap.aspx?Country=USA&Locality=bogalusa&state=la&fmt=JSON
-```
-
-From the sample above:
-```
-http://www.museum.tulane.edu/webservices/geolocatesvcv2/glcwrap.aspx?
-``` 
-...is the base URL of the (Geolocate Search API) [http://www.museum.tulane.edu/geolocate/]...
-
-```
-Country=USA&Locality=bogalusa&state=la&fmt=JSON
-```
-
-are the parameters of the search. In this case, there are four basic parameters to the search.
-
-###Geocoding with Geolocate
-___this section in progress___
-
-#Geonames.org
-##Create an Account
-
-http://www.geonames.org/
-
-##Examine the API Docs
-
-http://www.geonames.org/export/ws-overview.html
-
-We're interested in the ___Search___ API
-
-http://www.geonames.org/export/geonames-search.html
-
-##Use the Advanced Search Box to Help Build a URL
-http://www.geonames.org/advanced-search.html?
-
-1. Search for 'Bexar County, Texas'; Country='United States'; Feature Class='Country,State,Region...'
-
-The resulting URL should look like this:
-```
-http://www.geonames.org/advanced-search.html?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=
-```
-Open up a new Browser Tab and Cut&Paste the part of the URL from the 'q=' parameter, all the way to the end of the URL, like this:
-
-```
-q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=
-```
-
-We're going to build our API Url from this. First, paste the API Base URL in front of the part you just pasted:
-
-Here is the Base URL:
-```
-api.geonames.org/search?
-```
-Here is what it should look like after pasting the two together:
-```
-api.geonames.org/search?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=
-```
-
-You can go ahead and hit enter to submit the URL. WHat you will get is an XML file, with an error message. This is because to use the API, you are required to identify yourself each time you submit a query. Now, you need to add a parameter that identifies you. You will add the username parameter, using your own username that you created when you registered with Geonames.org:
-
-The parameter is:
-```
-&username=?????????
-```
-Where you will replace the ???????? with your Geonames Username. Just put this right on the end of the URL you are building:
-```
-api.geonames.org/search?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=&username=?????????
-```
-
-Now try hitting enter to submit the URL, again. You should see something like the below (it's a large amount of text, since we haven't limited the returns, yet):
-```XML
-This XML file does not appear to have any style information associated with it. The document tree is shown below.
-<geonames style="MEDIUM">
-<totalResultsCount>14</totalResultsCount>
-<geoname>
-<toponymName>Bexar County</toponymName>
-<name>Bexar County</name>
-<lat>29.44896</lat>
-<lng>-98.52002</lng>
-<geonameId>4674023</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADM2</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Elmendorf</toponymName>
-<name>City of Elmendorf</name>
-<lat>29.25547</lat>
-<lng>-98.31695</lng>
-<geonameId>7173379</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Helotes</toponymName>
-<name>City of Helotes</name>
-<lat>29.56325</lat>
-<lng>-98.70832</lng>
-<geonameId>7173601</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Selma</toponymName>
-<name>City of Selma</name>
-<lat>29.58652</lat>
-<lng>-98.31338</lng>
-<geonameId>7174414</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Somerset</toponymName>
-<name>City of Somerset</name>
-<lat>29.22848</lat>
-<lng>-98.65671</lng>
-<geonameId>7174465</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Von Ormy</toponymName>
-<name>City of Von Ormy</name>
-<lat>29.28019</lat>
-<lng>-98.65567</lng>
-<geonameId>7226947</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Castle Hills</toponymName>
-<name>City of Castle Hills</name>
-<lat>29.52284</lat>
-<lng>-98.51971</lng>
-<geonameId>7172817</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Grey Forest</toponymName>
-<name>City of Grey Forest</name>
-<lat>29.61693</lat>
-<lng>-98.68332</lng>
-<geonameId>7173551</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Hill Country Village</toponymName>
-<name>City of Hill Country Village</name>
-<lat>29.58311</lat>
-<lng>-98.48913</lng>
-<geonameId>7173621</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Leon Valley</toponymName>
-<name>City of Leon Valley</name>
-<lat>29.49534</lat>
-<lng>-98.614</lng>
-<geonameId>7173662</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>City of Shavano Park</toponymName>
-<name>City of Shavano Park</name>
-<lat>29.58617</lat>
-<lng>-98.55632</lng>
-<geonameId>7174427</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>Town of Saint Hedwig</toponymName>
-<name>Town of Saint Hedwig</name>
-<lat>29.41971</lat>
-<lng>-98.20471</lng>
-<geonameId>7175009</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>Town of Hollywood Park</toponymName>
-<name>Town of Hollywood Park</name>
-<lat>29.59954</lat>
-<lng>-98.48391</lng>
-<geonameId>7175181</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-<geoname>
-<toponymName>Town of China Grove</toponymName>
-<name>Town of China Grove</name>
-<lat>29.39303</lat>
-<lng>-98.34435</lng>
-<geonameId>7175602</geonameId>
-<countryCode>US</countryCode>
-<countryName>United States</countryName>
-<fcl>A</fcl>
-<fcode>ADMD</fcode>
-</geoname>
-</geonames>
-```
-
-Now we will add the last two parameters to the URL and see what the result looks like. First, we want to return JSON, instead of XML, so let's add the paramet 'JSON' just after the 'search' and '?' in the URL, so our URL looks like this:
-```
-http://api.geonames.org/searchJSON?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=&username=mapninja
-```
-
-Hit enter and notice that returned format has changed (also note that I have formatted the following for easier viewing and that the JSON you get back will not have line breaks and indents):
-```JSON
-{
-  "totalResultsCount": 14,
-  "geonames": [
-    {
-      "adminCode1": "TX",
-      "lng": "-98.52002",
-      "geonameId": 4674023,
-      "toponymName": "Bexar County",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 1714773,
-      "countryCode": "US",
-      "name": "Bexar County",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "second-order administrative division",
-      "adminName1": "Texas",
-      "lat": "29.44896",
-      "fcode": "ADM2"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.31695",
-      "geonameId": 7173379,
-      "toponymName": "City of Elmendorf",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 1488,
-      "countryCode": "US",
-      "name": "City of Elmendorf",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.25547",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.70832",
-      "geonameId": 7173601,
-      "toponymName": "City of Helotes",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 7341,
-      "countryCode": "US",
-      "name": "City of Helotes",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.56325",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.31338",
-      "geonameId": 7174414,
-      "toponymName": "City of Selma",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 5540,
-      "countryCode": "US",
-      "name": "City of Selma",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.58652",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.65671",
-      "geonameId": 7174465,
-      "toponymName": "City of Somerset",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 1631,
-      "countryCode": "US",
-      "name": "City of Somerset",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.22848",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.65567",
-      "geonameId": 7226947,
-      "toponymName": "City of Von Ormy",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 1085,
-      "countryCode": "US",
-      "name": "City of Von Ormy",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.28019",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.51971",
-      "geonameId": 7172817,
-      "toponymName": "City of Castle Hills",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 4116,
-      "countryCode": "US",
-      "name": "City of Castle Hills",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.52284",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.68332",
-      "geonameId": 7173551,
-      "toponymName": "City of Grey Forest",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 483,
-      "countryCode": "US",
-      "name": "City of Grey Forest",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.61693",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.48913",
-      "geonameId": 7173621,
-      "toponymName": "City of Hill Country Village",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 985,
-      "countryCode": "US",
-      "name": "City of Hill Country Village",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.58311",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.614",
-      "geonameId": 7173662,
-      "toponymName": "City of Leon Valley",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 10151,
-      "countryCode": "US",
-      "name": "City of Leon Valley",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.49534",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.55632",
-      "geonameId": 7174427,
-      "toponymName": "City of Shavano Park",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 3035,
-      "countryCode": "US",
-      "name": "City of Shavano Park",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.58617",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.20471",
-      "geonameId": 7175009,
-      "toponymName": "Town of Saint Hedwig",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 2094,
-      "countryCode": "US",
-      "name": "Town of Saint Hedwig",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.41971",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.48391",
-      "geonameId": 7175181,
-      "toponymName": "Town of Hollywood Park",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 3062,
-      "countryCode": "US",
-      "name": "Town of Hollywood Park",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.59954",
-      "fcode": "ADMD"
-    },
-    {
-      "adminCode1": "TX",
-      "lng": "-98.34435",
-      "geonameId": 7175602,
-      "toponymName": "Town of China Grove",
-      "countryId": "6252001",
-      "fcl": "A",
-      "population": 1179,
-      "countryCode": "US",
-      "name": "Town of China Grove",
-      "fclName": "country, state, region,...",
-      "countryName": "United States",
-      "fcodeName": "administrative division",
-      "adminName1": "Texas",
-      "lat": "29.39303",
-      "fcode": "ADMD"
-    }
-  ]
-}
-```
-
-Finally, let's use the **&maxRows=1** parameter to tell Geonames to only return a single row of information, and the **&featureCode=ADM2** parameter (we only want County Names, returned), so that our URL looks like this:
-
-```
-http://api.geonames.org/searchJSON?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=&username=mapninja&maxRows=1&featureCode=ADM2
-```
-Hit enter to test the URL and you should return the following (again, unformatted):
-```JSON
-{
-  "totalResultsCount": 1,
-  "geonames": [
-    {
-      "countryId": "6252001",
-      "adminCode1": "TX",
-      "countryName": "United States",
-      "fclName": "country, state, region,...",
-      "countryCode": "US",
-      "lng": "-98.52002",
-      "fcodeName": "second-order administrative division",
-      "toponymName": "Bexar County",
-      "fcl": "A",
-      "name": "Bexar County",
-      "fcode": "ADM2",
-      "geonameId": 4674023,
-      "lat": "29.44896",
-      "adminName1": "Texas",
-      "population": 1714773
-    }
-  ]
-}
-```
-##Bulk Geocoding Against the Geonames API with OpenRefine
-Now it's time to start up OpenRefine and use the URL we've just created to submit a Geocoding Request for each of our Texas Counties.
-
-1. Start OpenRefine by double-clicking the Google-Refine.exe (yours will likely have a version number or it might even be called OpenRefine, if you downloaded the Beta release)
-
-2. Click on the **Create Project** link.
-
-3. Select the option to **Get data from this computer** and Click on the **Choose Files** button.
-
-4. Browse to the TexasHealthByCounty.csv and Select it. Click Next
-
-5. Make sure the data is properly formatted in the Preview, change the **Parse data as** parameters until the data is properly formatted. Click **Create Project** in the upper right corner of the page.
-
-##Concatenating Fields in OpenRefine
-If you haven't already, now is a good time to take a look at the basics of the GREL (Google Refine Expresion Language)  https://github.com/OpenRefine/OpenRefine/wiki/Understanding-Expressions.
-
-We will first concatenate the COunty and State fields, inserting "County, " as well, for a well formatted placename.
-
-1. Click on the Drop-down Arrow next to the County fieldname and go to **Edit Column>Add Column Based on This One>**
-
-2. Name your new column 'placename'
-
-3. Paste the following into the Expression Window:
-```
-value+" County, Texas"
-```
-
-![OpenRefine Expression Window] (/images/Geocoding_7.png)
-
-
-4. Notice that your Preview updates and you should see 'Anderson County, Texas' as the result for the first record. Click OK to calculate the concatenation for all of the records in the table.
-
-##Using Our URL as a Template
-
-Now is the time to return to your URL you created, and Copy it from the Browser Address Bar. Again, it should be something like this (with ?????? replaced by your Geonames Username):
-```
-http://api.geonames.org/searchJSON?q=Bexar+County%2C+Texas&country=US&featureClass=A&continentCode=&username=???????&maxRows=1&featureCode=ADM2
-```
-1. Now Click on the Drop-down Arrownext to the '**placename**' field and go to **Edit Column>Add Column by Fetching URL**
-
-2. Paste your __template__ URL into the Expression Window (this will result in a null values in the preview, that is fine):
-
-3. Now, Copy the following text:
-```
-'+ escape(value,'url')+'
-```
-
-4. **Carefully** select the following text from the URL you just pasted into the Expression window and replace it by pasting the text you just copied from the clipboard"
-```
-Bexar+County%2C+Texas
-```
-
-5. Add single quotes (') to the beginning and end of the Expression and you should see the syntax error dismissed.
-
-6. Name your New Column "**GEONAMESJSON1**" and set the Throttle Delay value to '200' milliseconds (this will tell OpenRefine to submit 5 Geocode Requests per second).
-
-![OpenRefine Expression Window] (/images/Geocoding_8.png)
-
-Wait for the geocoding to finish (a few minutes, HOORAY FOR PROGRESS MESSAGES!) and you should have something like this:
-
-![OpenRefine Expression Window] (/images/Geocoding_9.png)
-
-##Parsing the JSON for what you need
-
-Cut and paste one of your JSON records into the text tab of the Online JSON Viewer at http://jsonviewer.stack.hu/, then click **Format** and then click on the **Viewer** Tab and expand all of the elements in the panel on the left:
-
-![OpenRefine Expression Window] (/images/Geocoding_11.png)
-
-```
-value.parseJson().geonames[0].lat
-```
-![OpenRefine Expression Window] (/images/Geocoding_10.png)
-
-```
-value.parseJson().geonames[0].lng
-```
-##Clean the 'NR' Values Out of Your Table
-
-##Transform the OutComes and Factors Fields to Numeric
-
-##Export Your Data to a CSV
-
-##Display XY Data in ArcMap
-
-##Spatial Join Your Table to the Counties Data
-
-##Symbolize
-
-
-
-#Google APIs
-###Limits
-###Geocoding
-###Elevation
-###Directions
-
-#Important Links:
-OpenRefine.org: http://openrefine.org/
-
-Understanding OpenRefine Expressions: https://github.com/OpenRefine/OpenRefine/wiki/Understanding-Expressions
-
-The Geonames.org Geocoding API: http://www.geonames.org/export/geonames-search.html
-
-The Tulane Geolocate JSON Wrapper API Documentation: http://www.museum.tulane.edu/geolocate/files/glcJSON.pdf
-
-The Google Geocoding API: https://developers.google.com/maps/documentation/geocoding/
-
-The Google Directions API: https://developers.google.com/maps/documentation/directions/
-
-The Google Elevation API: https://developers.google.com/maps/documentation/elevation/
-
-Online JSON Viewer: http://jsonviewer.stack.hu/
+Setup
+-----
+
+1. Install Firefox
+2. Install the SQLite Manager add on: **Menu (the three horizontal lines near the
+top right corner of Firefox) -> Add-ons -> Search -> SQLite
+Manager -> Install -> Restart now**
+3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite)
+4. Add SQLite Manager to the menu: **Menu -> Customize, then drag the SQLite
+   Manager icon to one of the empty menu squares on the right, Exit Customize**
+5. Open SQLite Manager: **Menu -> SQLite Manager**
 
+
+Relational databases
+--------------------
+
+* Relational databases store data in tables with fields (columns) and records
+  (rows)
+* The data is not in any particular order
+* Data in tables has types and all values in a field have
+  the same type ([list of data types](#datatypes))
+* Every row-column combination contains a single *atomic* value, i.e., not
+   containing parts we might want to work with separately.
+* Information is not redundant.
+* Data is split into multiple tables, each containing one class of information. Tables are related by shared columns of information.
+* Queries let us look up data or make calculations based on columns
+
+
+Why use relational databases
+----------------------------
+
+* Data separate from analysis.
+  * No risk of accidentally changing data when analyzing it
+  * If we change the data we can just rerun the query
+* Fast for large amounts of data
+* Improve quality control of data entry (type constraints and use of forms in
+  Access, Filemaker, etc.)
+* The concepts of relational database querying are core to understanding how to
+  do similar things in R and Python
+
+
+Database Management Systems
+---------------------------
+
+There are a number of different database management systems for working with
+relational data. We're going to use SQLite today, but basically everything we
+teach you will apply to the other database systems as well (e.g., MySQL,
+PostgreSQL, MS Access, Filemaker Pro). The only things that will differ are the
+details of exactly how to import and export data and the
+[details of data types](#datatypediffs).
+
+
+Dataset Description
+-------------------
+
+The data we will be using is a time-series for a small mammal community in
+southern Arizona. This is part of a project studying the effects of rodents and
+ants on the plant community that has been running for almost 40 years.  The
+rodents are sampled on a series of 24 plots, with different experimental
+manipulations controlling which rodents are allowed to access which plots.
+
+This is a real dataset that has been used in over 100 publications. We've
+simplified it just a little bit for the workshop, but you can download the
+[full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
+exactly the same tools we'll learn about today.
+
+
+Database Design
+---------------
+
+1. Every row-column combination contains a single *atomic* value, i.e., not
+   containing parts we might want to work with separately.
+2. One field per type of information
+3. No redundant information
+     * Split into separate tables with one table per class of information
+	   * Needs an identifier in common between tables – shared column - to
+       reconnect (foreign key).
+
+
+Introduction to SQLite Manager
+------------------------------
+
+Let's all open the database we downloaded in SQLite Manager by clicking on the
+open file icon.
+
+You can see the tables in the database by looking at the left hand side of the
+screen under Tables.
+
+To see the contents of a table, click on that table and then click on the Browse
+and search tab in the right hand section of the screen.
+
+If we want to write a query, we click on the Execute SQL tab.
+
+Import
+------
+
+1. Start a New Database **Database -> New Database**
+2. Start the import **Database -> Import**
+3. Select the file to import
+4. Give the table a name (or use the default)
+5. If the first row has column headings, check the appropriate box
+6. Make sure the delimiter and quotation options are correct
+7. Press **OK**
+8. When asked if you want to modify the table, click **OK**
+9. Set the data types for each field
+
+***EXERCISE: Import the plots and species tables***
+
+You can also use this same approach to append new data to an existing table.
+
+
+Basic queries
+-------------
+Let's start by using the **surveys** table.
+Here we have data on every individual that was captured at the site,
+including when they were captured, what plot they were captured on,
+their species ID, sex and weight in grams.
+
+Let’s write an SQL query that selects only the year column from the surveys
+table.
+
+    SELECT year FROM surveys;
+
+We have capitalized the words SELECT and FROM because they are SQL keywords.
+SQL is case insensitive, but it helps for readability – good style.
+
+If we want more information, we can just add a new column to the list of fields,
+right after SELECT:
+
+    SELECT year, month, day FROM surveys;
+
+Or we can select all of the columns in a table using the wildcard *
+
+    SELECT * FROM surveys;
+
+### Unique values
+
+If we want only the unique values so that we can quickly see what species have
+been sampled we use ``DISTINCT``
+
+    SELECT DISTINCT species FROM surveys;
+
+If we select more than one column, then the distinct pairs of values are
+returned
+
+    SELECT DISTINCT year, species_id FROM surveys;
+
+### Calculated values
+
+We can also do calculations with the values in a query.
+For example, if we wanted to look at the mass of each individual
+on different dates, but we needed it in kg instead of g we would use
+
+    SELECT year, month, day, weight/1000.0 from surveys;
+
+When we run the query, the expression `weight / 1000.0` is evaluated for each row
+and appended to that row, in a new column. Note that because weight is an integer, if we divide by the integer 1000, the results will be reported as integers. In order to get more significant digits, you need to include the decimal point so that SQL knows you want the results reported as floating point numbers. 
+
+Expressions can use any fields, any
+arithmetic operators (+ - * /) and a variety of built-in functions (). For
+example, we could round the values to make them easier to read.
+
+    SELECT plot, species_ID, sex, weight, ROUND(weight / 1000.0, 2) FROM surveys;
+
+***EXERCISE: Write a query that returns
+             The year, month, day, speciesID and weight in mg***
+
+Filtering
+---------
+
+Databases can also filter data – selecting only the data meeting certain
+criteria.  For example, let’s say we only want data for the species Dipodomys
+merriami, which has a species code of DM.  We need to add a WHERE clause to our
+query:
+
+    SELECT * FROM surveys WHERE species_id="DM";
+
+We can do the same thing with numbers.
+Here, we only want the data since 2000:
+
+    SELECT * FROM surveys WHERE year >= 2000;
+
+We can use more sophisticated conditions by combining tests with AND and OR.
+For example, suppose we want the data on Dipodomys merriami starting in the year
+2000:
+
+    SELECT * FROM surveys WHERE (year >= 2000) AND (species_id = "DM");
+
+Note that the parentheses aren’t needed, but again, they help with readability.
+They also ensure that the computer combines AND and OR in the way that we
+intend.
+
+If we wanted to get data for any of the Dipodomys species,
+which have species codes DM, DO, and DS we could combine the tests using OR:
+
+    SELECT * FROM surveys WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS");
+
+***EXERCISE: Write a query that returns
+   the day, month, year, species ID, and weight (in kg) for
+   individuals caught on Plot 1 that weigh more than 75 g***
+
+
+Saving & Exporting queries
+--------------------------
+
+* Exporting:  **Actions** button and choosing **Save Result to File**.
+* Save: **View** drop down and **Create View**
+
+
+Building more complex queries
+-----------------------------
+
+Now, lets combine the above queries to get data for the 3 Dipodomys species from
+the year 2000 on.  This time, let’s use IN as one way to make the query easier
+to understand.  It is equivalent to saying `WHERE (species_id = "DM") OR (species_id
+= "DO") OR (species_id = "DS")`, but reads more neatly:
+
+    SELECT * FROM surveys WHERE (year >= 2000) AND (species_id IN ("DM", "DO", "DS"));
+
+    SELECT *
+    FROM surveys
+    WHERE (year >= 2000) AND (species_id IN ("DM", "DO", "DS"));
+
+We started with something simple, then added more clauses one by one, testing
+their effects as we went along.  For complex queries, this is a good strategy,
+to make sure you are getting what you want.  Sometimes it might help to take a
+subset of the data that you can easily see in a temporary database to practice
+your queries on before working on a larger or more complicated database.
+
+
+Sorting
+-------
+
+We can also sort the results of our queries by using ORDER BY.
+For simplicity, let’s go back to the species table and alphabetize it by taxa.
+
+    SELECT * FROM species ORDER BY taxa ASC;
+
+The keyword ASC tells us to order it in Ascending order.
+We could alternately use DESC to get descending order.
+
+    SELECT * FROM species ORDER BY taxa DESC;
+
+ASC is the default.
+
+We can also sort on several fields at once.
+To truly be alphabetical, we might want to order by genus then species.
+
+    SELECT * FROM species ORDER BY genus ASC, species ASC;
+
+***Exercise: Write a query that returns
+             year, species, and weight in kg from the surveys table, sorted with
+             the largest weights at the top***
+
+
+Order of execution
+------------------
+
+Another note for ordering. We don’t actually have to display a column to sort by
+it.  For example, let’s say we want to order by the species ID, but we only want
+to see genus and species.
+
+    SELECT genus, species FROM species ORDER BY taxa ASC;
+
+We can do this because sorting occurs earlier in the computational pipeline than
+field selection.
+
+The computer is basically doing this:
+
+1. Filtering rows according to WHERE
+2. Sorting results according to ORDER BY
+3. Displaying requested columns or expressions.
+
+
+Order of clauses
+----------------
+The order of the clauses when we write a query is dictated by SQL: SELECT, FROM, WHERE, ORDER BY
+and we often write each of them on their own line for readability.
+
+
+***Exercise: Let's try to combine what we've learned so far in a single query.
+Using the surveys table write a query to display the three date
+fields, species ID, and weight in kilograms (rounded to two decimal places), for
+rodents captured in 1999, ordered alphabetically by the species ID.***
+
+
+
+**BREAK**
+
+Aggregation
+-----------
+
+Aggregation allows us to combine results by grouping records based on value and
+calculating combined values in groups.
+
+Let’s go to the surveys table and find out how many individuals there are.
+Using the wildcard simply counts the number of records (rows)
+
+    SELECT COUNT(*) FROM surveys;
+
+We can also find out how much all of those individuals weigh.
+
+    SELECT COUNT(*), SUM(weight) FROM surveys;
+
+***Do you think you could output this value in kilograms, rounded to 3 decimal
+   places?***
+
+    SELECT ROUND(SUM(weight)/1000.0, 3) FROM surveys;
+
+There are many other aggregate functions included in SQL including
+MAX, MIN, and AVG.
+
+***From the surveys table, can we use one query to output the total weight,
+   average weight, and the min and max weights? How about the range of weight?***
+
+Now, let's see how many individuals were counted in each species. We do this
+using a GROUP BY clause
+
+    SELECT species_id, COUNT(*)
+    FROM surveys
+    GROUP BY species_id;
+
+GROUP BY tells SQL what field or fields we want to use to aggregate the data.
+If we want to group by multiple fields, we give GROUP BY a comma separated list.
+
+***EXERCISE: Write queries that return: 1. How many individuals were counted in
+   each year. 2. Average weight of each species in each year***
+
+We can order the results of our aggregation by a specific column, including the
+aggregated column.  Let’s count the number of individuals of each species
+captured, ordered by the count
+
+    SELECT species_id, COUNT(*)
+    FROM surveys
+    GROUP BY species_id
+    ORDER BY COUNT(species_id);
+
+
+Joins
+-----
+
+To combine data from two tables we use the SQL JOIN command, which comes after
+the FROM command.
+
+We also need to tell the computer which columns provide the link between the two
+tables using the word ON.  What we want is to join the data with the same
+species codes.
+
+    SELECT *
+    FROM surveys
+    JOIN species ON surveys.species_id = species.species_id;
+
+ON is like WHERE, it filters things out according to a test condition.  We use
+the table.colname format to tell the manager what column in which table we are
+referring to.
+
+We often won't want all of the fields from both tables, so anywhere we would
+have used a field name in a non-join query, we can use *table.colname*
+
+For example, what if we wanted information on when individuals of each
+species were captured, but instead of their species ID we wanted their
+actual species names.
+
+    SELECT surveys.year, surveys.month, surveys.day, species.genus, species.species
+    FROM surveys
+    JOIN species ON surveys.species_id = species.species_id;
+
+***Exercise: Write a query that returns the genus, the species, and the weight
+   of every individual captured at the site***
+
+Joins can be combined with sorting, filtering, and aggregation.  So, if we
+wanted average mass of the individuals on each different type of treatment, we
+could do something like
+
+    SELECT plots.plot_type, AVG(surveys.wgt)
+    FROM surveys
+    JOIN plots
+    ON surveys.plot = plots.plot_id
+    GROUP BY plots.plot_type;
+
+
+Adding data to existing tables
+------------------------------
+
+* Browse & Search -> Add
+* Enter data into a csv file and append
+
+
+Other database management systems
+---------------------------------
+
+* Access or Filemaker Pro
+    * GUI
+    * Forms w/QAQC
+	* But not cross-platform
+* MySQL/PostgreSQL
+    * Multiple simultaneous users
+	* More difficult to setup and maintain
+
+
+Q & A on Database Design (review if time)
+-----------------------------------------
+
+1. Order doesn't matter
+2. Every row-column combination contains a single *atomic* value, i.e., not
+   containing parts we might want to work with separately.
+3. One field per type of information
+4. No redundant information
+     * Split into separate tables with one table per class of information
+	 * Needs an identifier in common between tables – shared column - to
+       reconnect (foreign key).
+
+
+<a name="datatypes"></a> Data types
+-----------------------------------
+
+| Data type  | Description |
+| :------------- | :------------- |
+| CHARACTER(n)  | Character string. Fixed-length n  |
+| VARCHAR(n) or CHARACTER VARYING(n) |	Character string. Variable length. Maximum length n |
+| BINARY(n) |	Binary string. Fixed-length n |
+| BOOLEAN	| Stores TRUE or FALSE values |
+| VARBINARY(n) or BINARY VARYING(n) |	Binary string. Variable length. Maximum length n |
+| INTEGER(p) |	Integer numerical (no decimal). |
+| SMALLINT | 	Integer numerical (no decimal). |
+| INTEGER |	Integer numerical (no decimal). |
+| BIGINT |	Integer numerical (no decimal). |
+| DECIMAL(p,s) |	Exact numerical, precision p, scale s. |
+| NUMERIC(p,s) |	Exact numerical, precision p, scale s. (Same as DECIMAL) |
+| FLOAT(p) |	Approximate numerical, mantissa precision p. A floating number in base 10 exponential notation. |
+| REAL |	Approximate numerical |
+| FLOAT |	Approximate numerical |
+| DOUBLE PRECISION |	Approximate numerical |
+| DATE |	Stores year, month, and day values |
+| TIME |	Stores hour, minute, and second values |
+| TIMESTAMP |	Stores year, month, day, hour, minute, and second values |
+| INTERVAL |	Composed of a number of integer fields, representing a period of time, depending on the type of interval |
+| ARRAY |	A set-length and ordered collection of elements |
+| MULTISET | 	A variable-length and unordered collection of elements |
+| XML |	Stores XML data |
+
+
+<a name="datatypediffs"></a> SQL Data Type Quick Reference
+----------------------------------------------------------
+
+Different databases offer different choices for the data type definition.
+
+The following table shows some of the common names of data types between the various database platforms:
+
+| Data type |	Access |	SQLServer |	Oracle | MySQL | PostgreSQL |
+| :------------- | :------------- | :---------------- | :----------------| :----------------| :---------------|
+| boolean	| Yes/No |	Bit |	Byte |	N/A	| Boolean |
+| integer	| Number (integer) | Int |	Number | Int / Integer	| Int / Integer |
+| float	| Number (single)	|Float / Real |	Number |	Float |	Numeric
+| currency | Currency |	Money |	N/A |	N/A	| Money |
+| string (fixed) | N/A | Char |	Char | Char |	Char |
+| string (variable)	| Text (<256) / Memo (65k+)	| Varchar |	Varchar / Varchar2 |	Varchar |	Varchar |
+| binary object	OLE Object Memo	Binary (fixed up to 8K) | Varbinary (<8K) | Image (<2GB)	Long | Raw	Blob | Text	Binary | Varbinary |
