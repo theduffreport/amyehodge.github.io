@@ -48,7 +48,7 @@ When asked if you want to modify the table, click **OK** and then set the data t
 #####Data types for each column (field)
 
 | Table | Column | Data Type | Other features |
-| :------|:------|:------|:------ |
+| ------|------|------|------ |
 | plots | plot_id |integer | primary key, unique |
 | plots | plot_type | varchar |
 
