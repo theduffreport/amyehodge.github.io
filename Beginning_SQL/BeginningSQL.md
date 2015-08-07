@@ -63,7 +63,8 @@ and search tab in the right hand section of the screen.
 
 ![Contents of species table](http://amyehodge.github.io/Beginning_SQL/images/BSQL3.png "Contents of species table")
 
-***EXERCISE 0: Import the species and surveys tables***
+***EXERCISE 0: Import the species and surveys tables using the information provided in the table below.***
+
 Table | Column | Data Type | Other features
 ------|------|------|------
 species | species_id | char(2) | primary key, unique
