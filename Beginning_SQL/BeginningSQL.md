@@ -39,7 +39,7 @@ We are going to start by importing the data tables that we want to use in our da
 6. If the the file has column headings in the first row, check the appropriate box (our tables have column headings in the first row)
 7. Make sure the delimiter and quotation options are correct (our tables use a comma delimiter and double quotes)
 
-   ![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL1.png "Setting import options")  
+![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL1.png "Setting import options")  
 
 8. Press **OK**
 
@@ -53,14 +53,14 @@ When asked if you want to modify the table, click **OK** and then set the data t
 | plots | plot_type | varchar |
 
 
-    ![Defining data types](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Defining data types")
+![Defining data types](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Defining data types")
 
 Once the data has been imported, the panel on the left will display a list of the tables under the heading "Tables."
 
 To see the contents of a table, click on that table and then click on the Browse
 and search tab in the right hand section of the screen.
 
-    ![Contents of species table](http://amyehodge.github.io/Beginning_SQL/images/BSQL3.png "Contents of species table")
+![Contents of species table](http://amyehodge.github.io/Beginning_SQL/images/BSQL3.png "Contents of species table")
 
 ***EXERCISE 0: Import the species and surveys tables using the information provided in the table below.***
 
