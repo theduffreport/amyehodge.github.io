@@ -12,7 +12,7 @@ top right corner of Firefox) -> Add-ons -> Search -> SQLite
 Manager -> Install -> Restart now**
 4. Add SQLite Manager to the menu: **Menu -> Customize, then drag the SQLite
    Manager icon to one of the empty menu squares on the right, Exit Customize**
-3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.json), and [surveys](http://files.figshare.com/1919744/surveys.csv).
+3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.csv), and [surveys](http://files.figshare.com/1919744/surveys.csv).
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
 ##Dataset Description
@@ -27,6 +27,59 @@ This is a real dataset that has been used in over 100 publications. We've
 simplified it just a little bit for the workshop, but you can download the
 [full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
 exactly the same tools we'll learn about today.
+
+##Import Data into SQLite
+
+We are going to start by importing the data tables that we want to use in our database.
+
+1. Start a New Database **Database -> New Database**
+2. Name your database and save it to the desktop
+3. Import your data tables into your database by selecting **Database -> Import**
+4. Click on the **Select File** and choose the csv file you want to import
+5. Give the table a name (or use the default)
+6. If the the file has column headings in the first row, check the appropriate box (our tables have column headings in the first row)
+7. Make sure the delimiter and quotation options are correct (our tables use a comma delimiter and double quotes)
+
+   ![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Setting import options")  
+
+8. Press **OK**
+
+When asked if you want to modify the table, click **OK** and then set the data types for each column (field) as indicated below.
+
+#####Data types for each column (field)
+
+Table | Column | Data Type | Other features
+------|------|------|------
+plots | plot_id |integer | primary key, unique
+plots | plot_type | varchar
+
+
+![Defining data types](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Defining data types")
+
+Once the data has been imported, the panel on the left will display a list of the tables under the heading "Tables."
+
+To see the contents of a table, click on that table and then click on the Browse
+and search tab in the right hand section of the screen.
+
+![Contents of species table](http://amyehodge.github.io/Beginning_SQL/images/BSQL3.png "Contents of species table")
+
+***EXERCISE 0: Import the species and surveys tables***
+Table | Column | Data Type | Other features
+------|------|------|------
+species | species_id | char(2) | primary key, unique
+species | genus | varchar | 
+species | species | varchar | 	
+species | taxa | varchar | 
+surveys | record_id | integer | primary key, unique
+surveys | month | integer | 
+surveys | day | integer | 
+surveys | year | 	integer	 | 
+surveys | plot_id | integer | 
+surveys | species_id | char(2) | 
+surveys | sex | char(1) | allow null | 
+surveys | hindfoot_length | allow null | 
+surveys | weight | allow null | 
+You can also use this same approach to append new data to an existing table.
 
 ##Relational databases
 
@@ -75,38 +128,8 @@ details of exactly how to import and export data and the
        reconnect (foreign key).
 
 
-##Introduction to SQLite Manager
-
-Let's all open the database we downloaded in SQLite Manager by clicking on the
-open file icon.
-
-You can see the tables in the database by looking at the left hand side of the
-screen under Tables.
-
-To see the contents of a table, click on that table and then click on the Browse
-and search tab in the right hand section of the screen.
-
-If we want to write a query, we click on the Execute SQL tab.
-
-##Import
-
-1. Start a New Database **Database -> New Database**
-2. Start the import **Database -> Import**
-3. Select the file to import
-4. Give the table a name (or use the default)
-5. If the first row has column headings, check the appropriate box
-6. Make sure the delimiter and quotation options are correct
-7. Press **OK**
-8. When asked if you want to modify the table, click **OK**
-9. Set the data types for each field
-
-***EXERCISE: Import the plots and species tables***
-
-You can also use this same approach to append new data to an existing table.
-
-
 ##Basic queries
-
+To write a query, click on the Execute SQL tab.
 Let's start by using the **surveys** table.
 Here we have data on every individual that was captured at the site,
 including when they were captured, what plot they were captured on,
