@@ -1,3 +1,8 @@
+This workshop is based on materials that are Copyright (c)
+  Data Carpentry (http://datacarpentry.org).
+  
+These materials are provided by Data Carpentry under the following conditions:
+
 ### Instructional Material
 
 All Data Carpentry instructional material is made available under
