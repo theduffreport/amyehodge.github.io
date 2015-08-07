@@ -332,6 +332,7 @@ Joins can be combined with sorting, filtering, and aggregation. So, if we wanted
 
 The following table shows some common SQL data types. Different database platforms may have slightly different data types. 
 
+
 | Data type  | Description |
 | :------------- | :------------- |
 | CHARACTER(n)  | Character string. Fixed-length n  |
@@ -356,6 +357,7 @@ The following table shows some common SQL data types. Different database platfor
 | ARRAY |	A set-length and ordered collection of elements |
 | MULTISET | 	A variable-length and unordered collection of elements |
 | XML |	Stores XML data |
+
 
 Source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
