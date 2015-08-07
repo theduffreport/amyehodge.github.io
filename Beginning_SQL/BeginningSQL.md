@@ -83,17 +83,19 @@ and search tab in the right hand section of the screen.
 
 You can also use this same approach to append new data to an existing table.
 
-##Relational databases
+##Relational databases and database design
 
-* Relational databases store data in tables with fields (columns) and records
-  (rows)
-* The data is not in any particular order
-* Data in tables has types and all values in a field have the same type ([list of data types](#datatypes)). We selected these data types when we imported our tables.
-* Every row-column combination contains a single *atomic* value, i.e., not
-   containing parts we might want to work with separately.
-* Information is not redundant.
-* Data is split into multiple tables, each containing one class of information. Tables are related by shared columns of information.
-* Queries let us look up data or make calculations based on columns
+* Relational databases store data in tables with fields (columns) and records (rows)
+* The records are not in any particular order
+* Data fields have types and all values in a field have the same type ([list of data types](#datatypes)). We defined these data types when we imported our tables.
+* Each table contains a single field (or combination of fields) that uniquely defines each database record. This field is called the primary key. We defined these as well when we imported our tables.
+* Every row-column combination (cell) contains a single *atomic* value, i.e., not containing parts we might want to work with separately. Note how the genus and species information in the species table are in separate fields.
+
+    ![Row-column combinations contain atomic values](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Row-column combinations contain atomic value")
+
+* Data are split into multiple tables, each containing one class of information. 
+* Tables are related by shared columns of information. The field of data in one table that correlates to the primary key field of another table is called the foreign key.
+* Queries let us look up data or make calculations based on the fields of data.
 
 
 ##Why use relational databases
@@ -102,31 +104,11 @@ You can also use this same approach to append new data to an existing table.
   * No risk of accidentally changing data when analyzing it
   * If we change the data we can just rerun the query
 * Fast for large amounts of data
-* Improve quality control of data entry (type constraints and use of forms in
-  Access, Filemaker, etc.)
-* The concepts of relational database querying are core to understanding how to
-  do similar things in R and Python
-
+* Improve quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.)
 
 ##Database Management Systems
 
-There are a number of different database management systems for working with
-relational data. We're going to use SQLite today, but basically everything we
-teach you will apply to the other database systems as well (e.g., MySQL,
-PostgreSQL, MS Access, Filemaker Pro). The only things that will differ are the
-details of exactly how to import and export data and the
-[details of data types](#datatypediffs).
-
-
-##Database Design
-
-1. Every row-column combination contains a single *atomic* value, i.e., not
-   containing parts we might want to work with separately.
-2. One field per type of information
-3. No redundant information
-     * Split into separate tables with one table per class of information
-	   * Needs an identifier in common between tables – shared column - to
-       reconnect (foreign key).
+There are a number of different database management systems for working with relational data. We're going to use SQLite today, but basically everything we teach you will apply to the other database systems as well (e.g., MySQL, PostgreSQL, MS Access, Filemaker Pro). The differences between these are mostly in the details of exactly how to import and export data, the specific data types, and nuances of how the queries are written.
 
 
 ##Basic queries
@@ -453,3 +435,4 @@ Source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)
 List some books available at the library 
 Lists tutorials online, including codeacademy and lynda.com
+[SQLite tutorial[(http://www.tutorialspoint.com/sqlite/index.htm) on TutorialsPoint
