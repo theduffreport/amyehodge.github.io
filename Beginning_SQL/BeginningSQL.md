@@ -15,9 +15,20 @@ Manager -> Install -> Restart now**
 3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.json), and [surveys](http://files.figshare.com/1919744/surveys.csv).
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
+##Dataset Description
 
-Relational databases
---------------------
+The data we will be using is a time-series for a small mammal community in
+southern Arizona. This is part of a project studying the effects of rodents and
+ants on the plant community that has been running for almost 40 years.  The
+rodents are sampled on a series of 24 plots, with different experimental
+manipulations controlling which rodents are allowed to access which plots.
+
+This is a real dataset that has been used in over 100 publications. We've
+simplified it just a little bit for the workshop, but you can download the
+[full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
+exactly the same tools we'll learn about today.
+
+##Relational databases
 
 * Relational databases store data in tables with fields (columns) and records
   (rows)
@@ -31,8 +42,7 @@ Relational databases
 * Queries let us look up data or make calculations based on columns
 
 
-Why use relational databases
-----------------------------
+##Why use relational databases
 
 * Data separate from analysis.
   * No risk of accidentally changing data when analyzing it
@@ -44,8 +54,7 @@ Why use relational databases
   do similar things in R and Python
 
 
-Database Management Systems
----------------------------
+##Database Management Systems
 
 There are a number of different database management systems for working with
 relational data. We're going to use SQLite today, but basically everything we
@@ -55,23 +64,7 @@ details of exactly how to import and export data and the
 [details of data types](#datatypediffs).
 
 
-Dataset Description
--------------------
-
-The data we will be using is a time-series for a small mammal community in
-southern Arizona. This is part of a project studying the effects of rodents and
-ants on the plant community that has been running for almost 40 years.  The
-rodents are sampled on a series of 24 plots, with different experimental
-manipulations controlling which rodents are allowed to access which plots.
-
-This is a real dataset that has been used in over 100 publications. We've
-simplified it just a little bit for the workshop, but you can download the
-[full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
-exactly the same tools we'll learn about today.
-
-
-Database Design
----------------
+##Database Design
 
 1. Every row-column combination contains a single *atomic* value, i.e., not
    containing parts we might want to work with separately.
@@ -82,8 +75,7 @@ Database Design
        reconnect (foreign key).
 
 
-Introduction to SQLite Manager
-------------------------------
+##Introduction to SQLite Manager
 
 Let's all open the database we downloaded in SQLite Manager by clicking on the
 open file icon.
@@ -96,8 +88,7 @@ and search tab in the right hand section of the screen.
 
 If we want to write a query, we click on the Execute SQL tab.
 
-Import
-------
+##Import
 
 1. Start a New Database **Database -> New Database**
 2. Start the import **Database -> Import**
@@ -114,8 +105,8 @@ Import
 You can also use this same approach to append new data to an existing table.
 
 
-Basic queries
--------------
+##Basic queries
+
 Let's start by using the **surveys** table.
 Here we have data on every individual that was captured at the site,
 including when they were captured, what plot they were captured on,
@@ -170,8 +161,7 @@ example, we could round the values to make them easier to read.
 ***EXERCISE: Write a query that returns
              The year, month, day, speciesID and weight in mg***
 
-Filtering
----------
+##Filtering
 
 Databases can also filter data – selecting only the data meeting certain
 criteria.  For example, let’s say we only want data for the species Dipodomys
@@ -205,15 +195,13 @@ which have species codes DM, DO, and DS we could combine the tests using OR:
    individuals caught on Plot 1 that weigh more than 75 g***
 
 
-Saving & Exporting queries
---------------------------
+##Saving & Exporting queries
 
 * Exporting:  **Actions** button and choosing **Save Result to File**.
 * Save: **View** drop down and **Create View**
 
 
-Building more complex queries
------------------------------
+##Building more complex queries
 
 Now, lets combine the above queries to get data for the 3 Dipodomys species from
 the year 2000 on.  This time, let’s use IN as one way to make the query easier
@@ -233,8 +221,7 @@ subset of the data that you can easily see in a temporary database to practice
 your queries on before working on a larger or more complicated database.
 
 
-Sorting
--------
+##Sorting
 
 We can also sort the results of our queries by using ORDER BY.
 For simplicity, let’s go back to the species table and alphabetize it by taxa.
@@ -258,8 +245,7 @@ To truly be alphabetical, we might want to order by genus then species.
              the largest weights at the top***
 
 
-Order of execution
-------------------
+##Order of execution
 
 Another note for ordering. We don’t actually have to display a column to sort by
 it.  For example, let’s say we want to order by the species ID, but we only want
@@ -277,8 +263,8 @@ The computer is basically doing this:
 3. Displaying requested columns or expressions.
 
 
-Order of clauses
-----------------
+##Order of clauses
+
 The order of the clauses when we write a query is dictated by SQL: SELECT, FROM, WHERE, ORDER BY
 and we often write each of them on their own line for readability.
 
@@ -289,11 +275,7 @@ fields, species ID, and weight in kilograms (rounded to two decimal places), for
 rodents captured in 1999, ordered alphabetically by the species ID.***
 
 
-
-**BREAK**
-
-Aggregation
------------
+##Aggregation
 
 Aggregation allows us to combine results by grouping records based on value and
 calculating combined values in groups.
@@ -341,8 +323,7 @@ captured, ordered by the count
     ORDER BY COUNT(species_id);
 
 
-Joins
------
+##Joins
 
 To combine data from two tables we use the SQL JOIN command, which comes after
 the FROM command.
@@ -384,15 +365,13 @@ could do something like
     GROUP BY plots.plot_type;
 
 
-Adding data to existing tables
-------------------------------
+##Adding data to existing tables
 
 * Browse & Search -> Add
 * Enter data into a csv file and append
 
 
-Other database management systems
----------------------------------
+##Other database management systems
 
 * Access or Filemaker Pro
     * GUI
@@ -403,8 +382,7 @@ Other database management systems
 	* More difficult to setup and maintain
 
 
-Q & A on Database Design (review if time)
------------------------------------------
+##Q & A on Database Design (review if time)
 
 1. Order doesn't matter
 2. Every row-column combination contains a single *atomic* value, i.e., not
@@ -416,8 +394,7 @@ Q & A on Database Design (review if time)
        reconnect (foreign key).
 
 
-<a name="datatypes"></a> Data types
------------------------------------
+##<a name="datatypes"></a> Data types
 
 | Data type  | Description |
 | :------------- | :------------- |
@@ -445,8 +422,7 @@ Q & A on Database Design (review if time)
 | XML |	Stores XML data |
 
 
-<a name="datatypediffs"></a> SQL Data Type Quick Reference
-----------------------------------------------------------
+##<a name="datatypediffs"></a> SQL Data Type Quick Reference
 
 Different databases offer different choices for the data type definition.
 
