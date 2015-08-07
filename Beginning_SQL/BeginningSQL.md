@@ -48,10 +48,10 @@ When asked if you want to modify the table, click **OK** and then set the data t
 
 #####Data types for each column (field)
 
-Table | Column | Data Type | Other features
-------|------|------|------
-plots | plot_id |integer | primary key, unique
-plots | plot_type | varchar
+| Table | Column | Data Type | Other features |
+| :------|:------|:------|:------ |
+| plots | plot_id |integer | primary key, unique |
+| plots | plot_type | varchar |
 
 
 ![Defining data types](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Defining data types")
@@ -65,21 +65,22 @@ and search tab in the right hand section of the screen.
 
 ***EXERCISE 0: Import the species and surveys tables using the information provided in the table below.***
 
-Table | Column | Data Type | Other features
-------|------|------|------
-species | species_id | char(2) | primary key, unique
-species | genus | varchar | 
-species | species | varchar | 	
-species | taxa | varchar | 
-surveys | record_id | integer | primary key, unique
-surveys | month | integer | 
-surveys | day | integer | 
-surveys | year | 	integer	 | 
-surveys | plot_id | integer | 
-surveys | species_id | char(2) | 
-surveys | sex | char(1) | allow null | 
-surveys | hindfoot_length | allow null | 
-surveys | weight | allow null | 
+| Table | Column | Data Type | Other features |
+| :------|:------|:------|:------ |
+| species | species_id | char(2) | primary key, unique |
+| species | genus | varchar |  |
+| species | species | varchar | 	 |
+| species | taxa | varchar |  |
+| surveys | record_id | integer | primary key, unique |
+| surveys | month | integer |  |
+| surveys | day | integer |  |
+| surveys | year | 	integer	 |  |
+| surveys | plot_id | integer |  |
+| surveys | species_id | char(2) | allow null  |
+| surveys | sex | char(1) | allow null | 
+| surveys | hindfoot_length | integer | allow null |
+| surveys | weight | integer | allow null |
+
 You can also use this same approach to append new data to an existing table.
 
 ##Relational databases
@@ -87,8 +88,7 @@ You can also use this same approach to append new data to an existing table.
 * Relational databases store data in tables with fields (columns) and records
   (rows)
 * The data is not in any particular order
-* Data in tables has types and all values in a field have
-  the same type ([list of data types](#datatypes))
+* Data in tables has types and all values in a field have the same type ([list of data types](#datatypes)). We selected these data types when we imported our tables.
 * Every row-column combination contains a single *atomic* value, i.e., not
    containing parts we might want to work with separately.
 * Information is not redundant.
@@ -420,23 +420,25 @@ could do something like
 
 ##<a name="datatypes"></a> Data types
 
+The following table shows some common SQL data types. Different database platforms may have slightly different data types. 
+
 | Data type  | Description |
 | :------------- | :------------- |
 | CHARACTER(n)  | Character string. Fixed-length n  |
 | VARCHAR(n) or CHARACTER VARYING(n) |	Character string. Variable length. Maximum length n |
-| BINARY(n) |	Binary string. Fixed-length n |
+| BINARY(n) |	Binary string (0s and 1s). Fixed-length n |
 | BOOLEAN	| Stores TRUE or FALSE values |
 | VARBINARY(n) or BINARY VARYING(n) |	Binary string. Variable length. Maximum length n |
-| INTEGER(p) |	Integer numerical (no decimal). |
-| SMALLINT | 	Integer numerical (no decimal). |
-| INTEGER |	Integer numerical (no decimal). |
-| BIGINT |	Integer numerical (no decimal). |
-| DECIMAL(p,s) |	Exact numerical, precision p, scale s. |
+| INTEGER(p) |	Integer numerical (no decimal). Precision p.|
+| SMALLINT | 	Integer numerical (no decimal). Precision 5.|
+| INTEGER |	Integer numerical (no decimal). Precision 10.|
+| BIGINT |	Integer numerical (no decimal). Precision 19.|
+| DECIMAL(p,s) |	Exact numerical, precision p, scale s. Example: decimal(5,2) is a number that has 3 digits before the decimal and 2 digits after the decimal|
 | NUMERIC(p,s) |	Exact numerical, precision p, scale s. (Same as DECIMAL) |
-| FLOAT(p) |	Approximate numerical, mantissa precision p. A floating number in base 10 exponential notation. |
-| REAL |	Approximate numerical |
-| FLOAT |	Approximate numerical |
-| DOUBLE PRECISION |	Approximate numerical |
+| FLOAT(p) |	Approximate numerical, mantissa precision p. A floating number in base 10 exponential notation. The size argument for this type consists of a single number specifying the minimum precision.|
+| REAL |	Approximate numerical, mantissa precision 7. |
+| FLOAT |	Approximate numerical, mantissa precision 16. |
+| DOUBLE PRECISION |	Approximate numerical, mantissa precision 16. |
 | DATE |	Stores year, month, and day values |
 | TIME |	Stores hour, minute, and second values |
 | TIMESTAMP |	Stores year, month, day, hour, minute, and second values |
@@ -445,22 +447,9 @@ could do something like
 | MULTISET | 	A variable-length and unordered collection of elements |
 | XML |	Stores XML data |
 
-
-##<a name="datatypediffs"></a> SQL Data Type Quick Reference
-
-Different databases offer different choices for the data type definition.
-
-The following table shows some of the common names of data types between the various database platforms:
-
-| Data type |	Access |	SQLServer |	Oracle | MySQL | PostgreSQL |
-| :------------- | :------------- | :---------------- | :----------------| :----------------| :---------------|
-| boolean	| Yes/No |	Bit |	Byte |	N/A	| Boolean |
-| integer	| Number (integer) | Int |	Number | Int / Integer	| Int / Integer |
-| float	| Number (single)	|Float / Real |	Number |	Float |	Numeric
-| currency | Currency |	Money |	N/A |	N/A	| Money |
-| string (fixed) | N/A | Char |	Char | Char |	Char |
-| string (variable)	| Text (<256) / Memo (65k+)	| Varchar |	Varchar / Varchar2 |	Varchar |	Varchar |
-| binary object	OLE Object Memo	Binary (fixed up to 8K) | Varbinary (<8K) | Image (<2GB)	Long | Raw	Blob | Text	Binary | Varbinary |
+Source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
 ##Resources
 [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)
+List some books available at the library 
+Lists tutorials online, including codeacademy and lynda.com
