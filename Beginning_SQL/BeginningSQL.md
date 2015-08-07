@@ -40,7 +40,7 @@ We are going to start by importing the data tables that we want to use in our da
 6. If the the file has column headings in the first row, check the appropriate box (our tables have column headings in the first row)
 7. Make sure the delimiter and quotation options are correct (our tables use a comma delimiter and double quotes)
 
-   ![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Setting import options")  
+   ![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL1.png "Setting import options")  
 
 8. Press **OK**
 
@@ -91,7 +91,7 @@ You can also use this same approach to append new data to an existing table.
 * Each table contains a single field (or combination of fields) that uniquely defines each database record. This field is called the primary key. We defined these as well when we imported our tables.
 * Every row-column combination (cell) contains a single *atomic* value, i.e., not containing parts we might want to work with separately. Note how the genus and species information in the species table are in separate fields.
 
-    ![Row-column combinations contain atomic values](http://amyehodge.github.io/Beginning_SQL/images/BSQL2.png "Row-column combinations contain atomic value")
+    ![Row-column combinations contain atomic values](http://amyehodge.github.io/Beginning_SQL/images/BSQL4.png "Row-column combinations contain atomic value")
 
 * Data are split into multiple tables, each containing one class of information. 
 * Tables are related by shared columns of information. The field of data in one table that correlates to the primary key field of another table is called the foreign key.
