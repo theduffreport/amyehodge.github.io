@@ -122,9 +122,9 @@ Let’s write a SQL query that selects only the year column from the surveys tab
 
     SELECT year FROM surveys;
 
-We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but it helps for readability; this is part of the best practices for SQL-style code.
+We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but it helps for readability; this is part of the best practices for SQL-style code. Every query must end in a semicolon. This is how the software knows this is the end of the query.
 
-To run the query in SQLite, click on the RunSQL button that is underneath the text box.
+To run the query in SQLite, click on the RunSQL button that is underneath the text box. If you were doing this at a command-line interface, you would just hit "enter."
 
 ![Run query](http://amyehodge.github.io/Beginning_SQL/images/BSQL6.png "Run query") 
 
@@ -241,7 +241,7 @@ We can also sort on several fields at once. To truly be alphabetical, we might w
 ***Exercise 3: Write a query that returns year, species, and weight in kg from the surveys table, sorted with the largest weights at the top***
 
 
-##Order of execution
+##Order of execution vs. order of writing
 
 Another note for ordering. We don’t actually have to display a column to sort by it. For example, let’s say we want to order by the species ID, but we only want to see genus and species.
 
@@ -258,9 +258,7 @@ The computer is basically doing this:
 3. Displaying requested columns or expressions.
 
 
-##Order of clauses
-
-The order of the clauses in a query is dictated by SQL: SELECT, FROM, WHERE, ORDER BY.
+When we write queries, SQL dictates the query parts be supplied in a particular order: SELECT, FROM, WHERE, ORDER BY. Note that this is not the same order in which the query is executed.
 
 
 ***Exercise 4: Let's try to combine what we've learned so far in a single query.
@@ -288,7 +286,7 @@ We can also find out how much all of those individuals weigh.
 
 There are many other aggregate functions included in SQL including MAX, MIN, and AVG.
 
-***From the surveys table, can we use one query to output the total weight, average weight, and the min and max weights? How about the range of weight?***
+***Exercise 5: From the surveys table, can we use one query to output the total weight, average weight, and the min and max weights?***
 
 Now, let's see how many individuals were counted in each species. We do this using a GROUP BY clause
 
@@ -298,7 +296,7 @@ Now, let's see how many individuals were counted in each species. We do this usi
 
 GROUP BY tells SQL what field or fields we want to use to aggregate the data. If we want to group by multiple fields, we give GROUP BY a comma separated list.
 
-***EXERCISE 5: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
+***EXERCISE 6: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
 
 We can order the results of our aggregation by a specific column, including the aggregated column. Let’s count the number of individuals of each species captured, ordered by the count
 
@@ -328,14 +326,14 @@ For example, what if we wanted information on when individuals of each species w
     FROM surveys
     JOIN species ON surveys.species_id = species.species_id;
 
-***Exercise 6: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
+***Exercise 7: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
 
 Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average mass of the individuals on each different type of treatment, we could do something like
 
-    SELECT plots.plot_type, AVG(surveys.wgt)
+    SELECT plots.plot_type, AVG(surveys.weight)
     FROM surveys
     JOIN plots
-    ON surveys.plot = plots.plot_id
+    ON surveys.plot_id = plots.plot_id
     GROUP BY plots.plot_type;
 
 
