@@ -23,7 +23,7 @@ rodents are sampled on a series of 24 plots, with different experimental
 manipulations controlling which rodents are allowed to access which plots.
 
 This is a real dataset that has been used in over 100 publications. We've
-simplified it just a little bit for the workshop, but you can download the
+simplified it a little bit for the workshop, but you can download the
 [full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
 exactly the same tools we'll learn about today.
 
@@ -101,7 +101,7 @@ You can also use this same approach to append new data to an existing table.
 
 * Data separate from analysis.
   * No risk of accidentally changing data when analyzing it
-  * If we change the data we can just rerun the query
+  * If we change the data we can rerun the query
 * Fast for large amounts of data
 * Improve quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.)
 
@@ -122,38 +122,38 @@ Let’s write a SQL query that selects only the year column from the surveys tab
 
     SELECT year FROM surveys;
 
-We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but it helps for readability; this is part of the best practices for SQL-style code. Every query must end in a semicolon. This is how the software knows this is the end of the query.
+This is called a "SELECT statement." We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but capitalizing helps with readability and is considered a best practice for SQL. In addition, every query must end in a semicolon. This is how the software knows this is the end of the query.
 
-To run the query in SQLite, click on the RunSQL button that is underneath the text box. If you were doing this at a command-line interface, you would just hit "enter."
+To run the query in SQLite, click on the RunSQL button that is underneath the text box. If you were doing this at a command-line interface, you would hit "enter."
 
 ![Run query](http://amyehodge.github.io/Beginning_SQL/images/BSQL6.png "Run query") 
 
-If we want more information, we can just add a new column to the list of fields that are listed immediately after SELECT:
+If we want more information, we can add a new column to the list of fields that are listed immediately after SELECT.
 
     SELECT year, month, day FROM surveys;
 
-Or we can select all of the columns in a table using the wildcard *
+Or we can select all of the columns in a table using the wildcard "``*``".
 
     SELECT * FROM surveys;
 
 ### Unique values
 
-If we want only the unique values so that we can quickly see what species have been sampled we use ``DISTINCT``
+If we want only the unique values so that we can quickly see what species have been sampled we use the keyword ``DISTINCT``.
 
     SELECT DISTINCT species_id FROM surveys;
 
-If we select more than one column, then the distinct pairs of values are returned
+If we select more than one column, then the distinct pairs of values are returned.
 
     SELECT DISTINCT year, species_id FROM surveys;
     
-This is a good point to introduce another best practice for formatting SQL queries. It helps with readability if you separate the parts of the query onto separate lines. So the above query should be written
+This is a good point to introduce another best practice for formatting SQL queries. It helps with readability if you separate the parts of the query onto separate lines. So the above query should be written:
 
     SELECT DISTINCT year, species_id
     FROM surveys;
 
 ### Calculated values
 
-We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we would use
+We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we could use this query:
 
     SELECT year, month, day, weight/1000.0
     FROM surveys;
@@ -187,9 +187,9 @@ We can use more sophisticated conditions by combining filters with AND as well a
     FROM surveys 
     WHERE (year >= 2000) AND (species_id = "DM");
 
-Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines AND and OR in the way that we intend.
+Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines AND and OR in the way that we intend. (AND takes precedence over OR and will be evaluated before OR.)
 
-If we wanted to get data for any of the Dipodomys species, which have species codes DM, DO, and DS we could combine the tests using OR:
+If we wanted to get data for any of the Dipodomys species, which have species codes DM, DO, and DS, we could combine the tests using OR:
 
     SELECT * 
     FROM surveys 
@@ -198,22 +198,21 @@ If we wanted to get data for any of the Dipodomys species, which have species co
 ***EXERCISE 2: Write a query that returns the day, month, year, species ID, and weight (in kg) for individuals caught on Plot 1 that weigh more than 75 g***
 
 
-##Saving & Exporting queries
+##Exporting & saving query results
 
-* Exporting:  **Actions** button and choosing **Save Result to File**. This will export your query results into a saved file on your computer. This file is not queriable.
-* Save: **View** drop down and **Create View**. This will save your query results as a special kind of table called a view that you can access via SQLite and can query.
+* Export Results:  To export your results into a saved file on your computer, click on the button next to **Actions** and choose **Save Result to File**. This file is not queriable.
+* Save Results: To save your results as a special kind of table called a view, click on **View** in the main menu and choose **Create View**. You can view and query this special table in SQLite.
 
 
 ##Building more complex queries
 
-Now, lets combine the above queries to get data for the 3 Dipodomys species from the year 2000 on. This time, let’s use IN as one way to make the query easier to understand. It is equivalent to saying `WHERE (species_id = "DM") OR (species_id
-= "DO") OR (species_id = "DS")`, but reads more neatly:
+Now, let's combine the above queries to get data for the three Dipodomys species starting from the year 2000. This time, let’s use IN as one way to make the query easier to understand. IN is equivalent to saying `WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS")`, but reads more neatly:
 
     SELECT * 
     FROM surveys 
     WHERE (year >= 2000) AND (species_id IN ("DM", "DO", "DS"));
 
-We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy to make sure you are getting what you want. Sometimes it might help to take a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
+We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy to make sure you are getting what you want. It also might be helpful to create a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
 
 
 ##Sorting
@@ -247,15 +246,16 @@ Another note for ordering. We don’t actually have to display a column to sort 
 
     SELECT genus, species
     FROM species
-    ORDER BY taxa ASC;
+    ORDER BY species_id ASC;
 
 We can do this because sorting occurs earlier in the computational pipeline than field selection.
 
 The computer is basically doing this:
 
-1. Filtering rows according to WHERE
-2. Sorting results according to ORDER BY
-3. Displaying requested columns or expressions.
+1. Collecting data from tables according to FROM
+2. Filtering rows according to WHERE
+3. Sorting results according to ORDER BY
+4. Displaying requested columns or expressions according to SELECT
 
 
 When we write queries, SQL dictates the query parts be supplied in a particular order: SELECT, FROM, WHERE, ORDER BY. Note that this is not the same order in which the query is executed.
