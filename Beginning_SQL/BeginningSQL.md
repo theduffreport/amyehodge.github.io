@@ -116,15 +116,19 @@ To write a query, click on the Execute SQL tab from within any of your database 
 ![Execute SQL](http://amyehodge.github.io/Beginning_SQL/images/BSQL5.png "Execute SQL")  
     
 Let's start by writing a query to pull up information from the **surveys** table.
-Here we have data on every individual that was captured at the site, including when they were captured, what plot they were captured on, their species ID, sex, and weight in grams.
+Here we have data on every individual that was captured at the site, including when they were captured, what plot they were captured on, their species ID, sex, hindfoot length, and weight in grams.
 
-Let’s write a SQL query that selects only the year column from the surveys table.
+Let’s write a SQL query that selects only the year column from the surveys table. Enter the query in the box labeled "Enter SQL."
 
     SELECT year FROM surveys;
 
-We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but it helps for readability – good style.
+We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but it helps for readability; this is part of the best practices for SQL-style code.
 
-If we want more information, we can just add a new column to the list of fields, right after SELECT:
+To run the query in SQLite, click on the RunSQL button that is underneath the text box.
+
+![Run query](http://amyehodge.github.io/Beginning_SQL/images/BSQL6.png "Run query") 
+
+If we want more information, we can just add a new column to the list of fields that are listed immediately after SELECT:
 
     SELECT year, month, day FROM surveys;
 
@@ -136,53 +140,68 @@ Or we can select all of the columns in a table using the wildcard *
 
 If we want only the unique values so that we can quickly see what species have been sampled we use ``DISTINCT``
 
-    SELECT DISTINCT species FROM surveys;
+    SELECT DISTINCT species_id FROM surveys;
 
 If we select more than one column, then the distinct pairs of values are returned
 
     SELECT DISTINCT year, species_id FROM surveys;
+    
+This is a good point to introduce another best practice for formatting SQL queries. It helps with readability if you separate the parts of the query onto separate lines. So the above query should be written
+
+    SELECT DISTINCT year, species_id
+    FROM surveys;
 
 ### Calculated values
 
 We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we would use
 
-    SELECT year, month, day, weight/1000.0 from surveys;
+    SELECT year, month, day, weight/1000.0
+    FROM surveys;
 
-When we run the query, the expression `weight / 1000.0` is evaluated for each row and appended to that row, in a new column. Note that because weight is an integer, if we divide by the integer 1000, the results will be reported as integers. In order to get more significant digits, you need to include the decimal point so that SQL knows you want the results reported as floating point numbers. 
+When we run the query, the expression `weight/1000.0` is evaluated for each row and appended to that row, in a new column. Note that because weight is an integer, if we divide by the integer 1000, the results will be reported as integers. In order to get more significant digits, you need to include the decimal point so that SQL knows you want the results reported as floating point numbers. 
 
 Expressions can use any fields, any arithmetic operators (+ - * /) and a variety of built-in functions (). For example, we could round the values to make them easier to read.
 
-    SELECT plot, species_ID, sex, weight, ROUND(weight / 1000.0, 2) FROM surveys;
+    SELECT plot_id, species_ID, sex, weight, ROUND(weight/1000.0, 2)
+    FROM surveys;
 
-***EXERCISE: Write a query that returns the year, month, day, speciesID and weight in mg***
+***EXERCISE 1: Write a query that returns the year, month, day, species ID, and weight in mg***
 
 ##Filtering
 
-Databases can also filter data – selecting only the data meeting certain criteria. For example, let’s say we only want data for the species Dipodomys merriami, which has a species code of DM. We need to add a WHERE clause to our query:
+Databases can also filter data – selecting only the data meeting certain criteria. For example, let’s say we only want data for the species [Dipodomys merriami](https://en.wikipedia.org/wiki/Merriam%27s_kangaroo_rat), which has a species code of DM. We need to add a WHERE clause to our query:
 
-    SELECT * FROM surveys WHERE species_id="DM";
+    SELECT * 
+    FROM surveys 
+    WHERE species_id="DM";
 
 We can do the same thing with numbers. Here, we only want the data since 2000:
 
-    SELECT * FROM surveys WHERE year >= 2000;
+    SELECT * 
+    FROM surveys 
+    WHERE year >= 2000;
 
-We can use more sophisticated conditions by combining tests with AND and OR. For example, suppose we want the data on Dipodomys merriami starting in the year 2000:
+We can use more sophisticated conditions by combining filters with AND as well as OR. For example, suppose we want the data on Dipodomys merriami starting in the year 2000:
 
-    SELECT * FROM surveys WHERE (year >= 2000) AND (species_id = "DM");
+    SELECT * 
+    FROM surveys 
+    WHERE (year >= 2000) AND (species_id = "DM");
 
-Note that the parentheses aren’t needed, but again, they help with readability. They also ensure that the computer combines AND and OR in the way that we intend.
+Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines AND and OR in the way that we intend.
 
 If we wanted to get data for any of the Dipodomys species, which have species codes DM, DO, and DS we could combine the tests using OR:
 
-    SELECT * FROM surveys WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS");
+    SELECT * 
+    FROM surveys 
+    WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS");
 
-***EXERCISE: Write a query that returns the day, month, year, species ID, and weight (in kg) for individuals caught on Plot 1 that weigh more than 75 g***
+***EXERCISE 2: Write a query that returns the day, month, year, species ID, and weight (in kg) for individuals caught on Plot 1 that weigh more than 75 g***
 
 
 ##Saving & Exporting queries
 
-* Exporting:  **Actions** button and choosing **Save Result to File**.
-* Save: **View** drop down and **Create View**
+* Exporting:  **Actions** button and choosing **Save Result to File**. This will export your query results into a saved file on your computer. This file is not queriable.
+* Save: **View** drop down and **Create View**. This will save your query results as a special kind of table called a view that you can access via SQLite and can query.
 
 
 ##Building more complex queries
@@ -190,39 +209,45 @@ If we wanted to get data for any of the Dipodomys species, which have species co
 Now, lets combine the above queries to get data for the 3 Dipodomys species from the year 2000 on. This time, let’s use IN as one way to make the query easier to understand. It is equivalent to saying `WHERE (species_id = "DM") OR (species_id
 = "DO") OR (species_id = "DS")`, but reads more neatly:
 
-    SELECT * FROM surveys WHERE (year >= 2000) AND (species_id IN ("DM", "DO", "DS"));
-
-    SELECT *
-    FROM surveys
+    SELECT * 
+    FROM surveys 
     WHERE (year >= 2000) AND (species_id IN ("DM", "DO", "DS"));
 
-We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy, to make sure you are getting what you want. Sometimes it might help to take a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
+We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy to make sure you are getting what you want. Sometimes it might help to take a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
 
 
 ##Sorting
 
 We can also sort the results of our queries by using ORDER BY. For simplicity, let’s go back to the species table and alphabetize it by taxa.
 
-    SELECT * FROM species ORDER BY taxa ASC;
+    SELECT * 
+    FROM species 
+    ORDER BY taxa ASC;
 
 The keyword ASC tells us to order it in Ascending order. We could alternately use DESC to get descending order.
 
-    SELECT * FROM species ORDER BY taxa DESC;
+    SELECT * 
+    FROM species 
+    ORDER BY taxa DESC;
 
 ASC is the default.
 
 We can also sort on several fields at once. To truly be alphabetical, we might want to order by genus then species.
 
-    SELECT * FROM species ORDER BY genus ASC, species ASC;
+    SELECT * 
+    FROM species 
+    ORDER BY genus ASC, species ASC;
 
-***Exercise: Write a query that returns year, species, and weight in kg from the surveys table, sorted with the largest weights at the top***
+***Exercise 3: Write a query that returns year, species, and weight in kg from the surveys table, sorted with the largest weights at the top***
 
 
 ##Order of execution
 
 Another note for ordering. We don’t actually have to display a column to sort by it. For example, let’s say we want to order by the species ID, but we only want to see genus and species.
 
-    SELECT genus, species FROM species ORDER BY taxa ASC;
+    SELECT genus, species
+    FROM species
+    ORDER BY taxa ASC;
 
 We can do this because sorting occurs earlier in the computational pipeline than field selection.
 
@@ -235,10 +260,10 @@ The computer is basically doing this:
 
 ##Order of clauses
 
-The order of the clauses when we write a query is dictated by SQL: SELECT, FROM, WHERE, ORDER BY and we often write each of them on their own line for readability.
+The order of the clauses in a query is dictated by SQL: SELECT, FROM, WHERE, ORDER BY.
 
 
-***Exercise: Let's try to combine what we've learned so far in a single query.
+***Exercise 4: Let's try to combine what we've learned so far in a single query.
 Using the surveys table write a query to display the three date fields, species ID, and weight in kilograms (rounded to two decimal places), for rodents captured in 1999, ordered alphabetically by the species ID.***
 
 
@@ -270,7 +295,7 @@ Now, let's see how many individuals were counted in each species. We do this usi
 
 GROUP BY tells SQL what field or fields we want to use to aggregate the data. If we want to group by multiple fields, we give GROUP BY a comma separated list.
 
-***EXERCISE: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
+***EXERCISE 5: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
 
 We can order the results of our aggregation by a specific column, including the aggregated column. Let’s count the number of individuals of each species captured, ordered by the count
 
@@ -300,7 +325,7 @@ For example, what if we wanted information on when individuals of each species w
     FROM surveys
     JOIN species ON surveys.species_id = species.species_id;
 
-***Exercise: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
+***Exercise 6: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
 
 Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average mass of the individuals on each different type of treatment, we could do something like
 
