@@ -89,10 +89,8 @@ You can also use this same approach to append new data to an existing table.
 * Data fields have types and all values in a field have the same type ([list of data types](#datatypes)). We defined these data types when we imported our tables.
 * Each table contains a single field (or combination of fields) that uniquely defines each database record. This field is called the primary key. We defined these as well when we imported our tables.
 * Every row-column combination (cell) contains a single *atomic* value, i.e., not containing parts we might want to work with separately. Note how the genus and species information in the species table are in separate fields.
-
     ![Row-column combinations contain atomic values](http://amyehodge.github.io/Beginning_SQL/images/BSQL4.png "Row-column combinations contain atomic value")
-
-* Data are split into multiple tables, each containing one class of information. 
+* Data are split into multiple tables, each containing one class of information.
 * Tables are related by shared columns of information. The field of data in one table that correlates to the primary key field of another table is called the foreign key.
 * Queries let us look up data or make calculations based on the fields of data.
 
