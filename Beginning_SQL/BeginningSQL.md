@@ -273,15 +273,18 @@ Aggregation allows us to combine results by grouping records based on value and 
 
 Let’s go to the surveys table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows)
 
-    SELECT COUNT(*) FROM surveys;
+    SELECT COUNT(*)
+    FROM surveys;
 
 We can also find out how much all of those individuals weigh.
 
-    SELECT COUNT(*), SUM(weight) FROM surveys;
+    SELECT COUNT(*), SUM(weight)
+    FROM surveys;
 
 ***Do you think you could output this value in kilograms, rounded to 3 decimal places?***
 
-    SELECT ROUND(SUM(weight)/1000.0, 3) FROM surveys;
+    SELECT ROUND(SUM(weight)/1000.0, 3)
+    FROM surveys;
 
 There are many other aggregate functions included in SQL including MAX, MIN, and AVG.
 
