@@ -108,7 +108,7 @@ ORDER BY AVG(surveys.weight);
 ```
 
 ####Exercise 9
-Using a SET OPERATOR (EXCEPT), identify all the species found in 1977 but not in 2002, report back species
+Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.
 
 ```
 SELECT DISTINCT species.genus, species.species, species.species_ID
