@@ -84,8 +84,8 @@ You can also use this same approach to append new data to an existing table.
 
 ##<a name="design"></a>Relational databases and database design
 
-* Relational databases store data in tables with fields (columns) and records (rows)
-* The records are not in any particular order
+* Relational databases store data in tables with fields (columns) and records (rows).
+* The records are not in any particular order.
 * Data fields have types and all values in a field have the same type ([list of data types](#datatypes)). We defined these data types when we imported our tables.
 * Each table contains a single field (or combination of fields) that uniquely defines each database record. This field is called the primary key. We defined these as well when we imported our tables.
 * Every row-column combination (cell) contains a single *atomic* value, i.e., not containing parts we might want to work with separately. Note how the genus and species information in the species table are in separate fields.
@@ -100,10 +100,10 @@ You can also use this same approach to append new data to an existing table.
 ## Why use relational databases
 
 * Data separate from analysis.
-  * No risk of accidentally changing data when analyzing it
+  * There is no risk of accidentally changing data when analyzing it.
   * If we change the data we can rerun the query
-* Fast for large amounts of data
-* Improve quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.)
+* It's fast for large amounts of data.
+* It improves quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.
 
 ## Database Management Systems
 
@@ -269,7 +269,7 @@ Using the surveys table write a query to display the three date fields, species 
 
 Aggregation allows us to combine results by grouping records based on value and to calculate combined values in groups.
 
-Let’s go to the **surveys** table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows)
+Let’s go to the **surveys** table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows).
 
     SELECT COUNT(*)
     FROM surveys;
@@ -298,7 +298,7 @@ Now, let's see how many individuals were counted in each species. We do this usi
 
 ***EXERCISE 6: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
 
-We can order the results of our aggregation by a specific column, including the aggregated column. Let’s count the number of individuals of each species captured, ordered by the count
+We can order the results of our aggregation by a specific column, including the aggregated column. Let’s count the number of individuals of each species captured, ordered by the count.
 
     SELECT species_id, COUNT(*)
     FROM surveys
@@ -328,7 +328,7 @@ For example, what if we wanted information on when individuals of each species w
 
 ***Exercise 7: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
 
-Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average weight of the individuals on each different type of treatment, we could do something like
+Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average weight of the individuals on each different type of treatment, we could do something like:
 
     SELECT plots.plot_type, AVG(surveys.weight)
     FROM surveys
