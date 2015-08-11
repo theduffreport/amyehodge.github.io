@@ -2,7 +2,7 @@
 
 This workshop will teach the basics of working with and querying structured data in a database environment. This workshop uses the SQLite plugin for Firefox. We will provide laptops with the correct software for the workshop. If you bring your own machine to the workshop, you must have the software installed in advance. 
 
-##Software and Data Setup
+## Software and Data Setup
 
 > *If you are using one of the Library's laptops, skip this section.*
 
@@ -14,7 +14,7 @@ Manager -> Install -> Restart now**
 3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.csv), and [surveys](http://files.figshare.com/1919744/surveys.csv).
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
-##Dataset Description
+## Dataset Description
 
 The data we will be using is a time-series for a small mammal community in
 southern Arizona. This is part of a project studying the effects of rodents and
@@ -27,7 +27,7 @@ simplified it a little bit for the workshop, but you can download the
 [full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
 exactly the same tools we'll learn about today.
 
-##Import Data into SQLite
+## Import Data into SQLite
 
 We are going to start by importing the data tables that we want to use in our database.
 
@@ -97,7 +97,7 @@ You can also use this same approach to append new data to an existing table.
 * Queries let us look up data or make calculations based on the fields of data.
 
 
-##Why use relational databases
+## Why use relational databases
 
 * Data separate from analysis.
   * No risk of accidentally changing data when analyzing it
@@ -105,12 +105,12 @@ You can also use this same approach to append new data to an existing table.
 * Fast for large amounts of data
 * Improve quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.)
 
-##Database Management Systems
+## Database Management Systems
 
 There are a number of different database management systems for working with relational data. We're going to use SQLite today, but basically everything we teach you will apply to the other database systems as well (e.g., MySQL, PostgreSQL, MS Access, Filemaker Pro). The differences between these are mostly in the details of exactly how to import and export data, the specific data types, and nuances of how the queries are written.
 
 
-##Basic queries
+## Basic queries
 To write a query, click on the Execute SQL tab from within any of your database tables.
 
 ![Execute SQL](http://amyehodge.github.io/Beginning_SQL/images/BSQL5.png "Execute SQL")  
@@ -118,17 +118,17 @@ To write a query, click on the Execute SQL tab from within any of your database 
 Let's start by writing a query to pull up information from the **surveys** table.
 Here we have data on every individual that was captured at the site, including when they were captured, what plot they were captured on, their species ID, sex, hindfoot length, and weight in grams.
 
-Let’s write a SQL query that selects only the year column from the surveys table. Enter the query in the box labeled "Enter SQL."
+Let’s write a SQL query that selects only the year column from the **surveys** table. Enter the query in the box labeled "Enter SQL."
 
     SELECT year FROM surveys;
 
-This is called a "SELECT statement." We have capitalized the words SELECT and FROM because they are SQL keywords. SQL is case insensitive, but capitalizing helps with readability and is considered a best practice for SQL. In addition, every query must end in a semicolon. This is how the software knows this is the end of the query.
+This is called a "SELECT statement." We have capitalized the words `SELECT` and `FROM` because they are SQL keywords. SQL is case insensitive, but capitalizing helps with readability and is considered a best practice for SQL. In addition, every query must end in a semicolon. This is how the software knows this is the end of the query.
 
 To run the query in SQLite, click on the RunSQL button that is underneath the text box. If you were doing this at a command-line interface, you would hit "enter."
 
 ![Run query](http://amyehodge.github.io/Beginning_SQL/images/BSQL6.png "Run query") 
 
-If we want more information, we can add a new column to the list of fields that are listed immediately after SELECT.
+If we want more information, we can add a new column to the list of fields that are listed immediately after `SELECT`.
 
     SELECT year, month, day FROM surveys;
 
@@ -136,7 +136,7 @@ Or we can select all of the columns in a table using the wildcard "``*``".
 
     SELECT * FROM surveys;
 
-### Unique values
+## Unique values
 
 If we want only the unique values so that we can quickly see what species have been sampled we use the keyword ``DISTINCT``.
 
@@ -151,7 +151,7 @@ This is a good point to introduce another best practice for formatting SQL queri
     SELECT DISTINCT year, species_id
     FROM surveys;
 
-### Calculated values
+## Calculated values
 
 We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we could use this query:
 
@@ -167,9 +167,9 @@ Expressions can use any fields, any arithmetic operators (+ - * /) and a variety
 
 ***EXERCISE 1: Write a query that returns the year, month, day, species ID, and weight in mg***
 
-##Filtering
+## Filtering
 
-Databases can also filter data – selecting only the data meeting certain criteria. For example, let’s say we only want data for the species [Dipodomys merriami](https://en.wikipedia.org/wiki/Merriam%27s_kangaroo_rat), which has a species code of DM. We need to add a WHERE clause to our query:
+Databases can also filter data – selecting only the data meeting certain criteria. For example, let’s say we only want data for the species [Dipodomys merriami](https://en.wikipedia.org/wiki/Merriam%27s_kangaroo_rat), which has a species code of DM. We need to add a `WHERE` clause to our query:
 
     SELECT * 
     FROM surveys 
@@ -187,7 +187,7 @@ We can use more sophisticated conditions by combining filters with AND as well a
     FROM surveys 
     WHERE (year >= 2000) AND (species_id = "DM");
 
-Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines AND and OR in the way that we intend. (AND takes precedence over OR and will be evaluated before OR.)
+Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines `AND` and `O`R in the way that we intend. (`AND` takes precedence over `OR` and will be evaluated before `OR`.)
 
 If we wanted to get data for any of the Dipodomys species, which have species codes DM, DO, and DS, we could combine the tests using OR:
 
@@ -198,15 +198,15 @@ If we wanted to get data for any of the Dipodomys species, which have species co
 ***EXERCISE 2: Write a query that returns the day, month, year, species ID, and weight (in kg) for individuals caught on Plot 1 that weigh more than 75 g***
 
 
-##Exporting & saving query results
+## Exporting & saving query results
 
 * Export Results:  To export your results into a saved file on your computer, click on the button next to **Actions** and choose **Save Result to File**. This file is not queriable.
 * Save Results: To save your results as a special kind of table called a view, click on **View** in the main menu and choose **Create View**. You can view and query this special table in SQLite.
 
 
-##Building more complex queries
+## Building more complex queries
 
-Now, let's combine the above queries to get data for the three Dipodomys species starting from the year 2000. This time, let’s use IN as one way to make the query easier to understand. IN is equivalent to saying `WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS")`, but reads more neatly:
+Now, let's combine the above queries to get data for the three Dipodomys species starting from the year 2000. This time, let’s use `IN` as one way to make the query easier to understand. `IN` is equivalent to saying `WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS")`, but reads more neatly:
 
     SELECT * 
     FROM surveys 
@@ -215,15 +215,15 @@ Now, let's combine the above queries to get data for the three Dipodomys species
 We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy to make sure you are getting what you want. It also might be helpful to create a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
 
 
-##Sorting
+## Sorting
 
-We can also sort the results of our queries by using ORDER BY. For simplicity, let’s go back to the species table and alphabetize it by taxa.
+We can also sort the results of our queries by using `ORDER BY`. For simplicity, let’s go back to the **species** table and alphabetize it by taxa.
 
     SELECT * 
     FROM species 
     ORDER BY taxa ASC;
 
-The keyword ASC tells us to order it in Ascending order. We could alternately use DESC to get descending order.
+The keyword `AS`C tells us to order it in Ascending order. We could alternately use `DESC` to get descending order.
 
     SELECT * 
     FROM species 
@@ -252,24 +252,24 @@ We can do this because sorting occurs earlier in the computational pipeline than
 
 The computer is basically doing this:
 
-1. Collecting data from tables according to FROM
-2. Filtering rows according to WHERE
-3. Sorting results according to ORDER BY
-4. Displaying requested columns or expressions according to SELECT
+1. Collecting data from tables according to `FROM`
+2. Filtering rows according to `WHERE`
+3. Sorting results according to `ORDER BY`
+4. Displaying requested columns or expressions according to `SELECT`
 
 
-When we write queries, SQL dictates the query parts be supplied in a particular order: SELECT, FROM, WHERE, ORDER BY. Note that this is not the same order in which the query is executed.
+When we write queries, SQL dictates the query parts be supplied in a particular order: `SELECT`, `FROM`, `WHERE`, `ORDER BY`. Note that this is not the same order in which the query is executed.
 
 
 ***Exercise 4: Let's try to combine what we've learned so far in a single query.
 Using the surveys table write a query to display the three date fields, species ID, and weight in kilograms (rounded to two decimal places), for rodents captured in 1999, ordered alphabetically by the species ID.***
 
 
-##Aggregation
+## Aggregation
 
 Aggregation allows us to combine results by grouping records based on value and to calculate combined values in groups.
 
-Let’s go to the surveys table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows)
+Let’s go to the **surveys** table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows)
 
     SELECT COUNT(*)
     FROM surveys;
@@ -306,11 +306,11 @@ We can order the results of our aggregation by a specific column, including the 
     ORDER BY COUNT(species_id);
 
 
-##Joins
+## Joins
 
 To combine data from two tables we use the SQL `JOIN` command, which comes after the `FROM` command.
 
-We will also need to use the keyword `ON` to tell the computer which columns provide the link ([Primary Key > Foreign Key](#design)) between the two tables. In this case, the species_id column in the species table is defined as the primary key. It contains the same data as the survey table's species_id column, which is the foreign key in this case.  We want to join the tables on these species_id fields.
+We will also need to use the keyword `ON` to tell the computer which columns provide the link ([Primary Key > Foreign Key](#design)) between the two tables. In this case, the species_id column in the **species** table is defined as the primary key. It contains the same data as the survey table's species_id column, which is the foreign key in this case.  We want to join the tables on these species_id fields.
 
     SELECT *
     FROM surveys
@@ -345,7 +345,7 @@ You can also combine many tables using a join. The query must include enough `JO
 
 ***Exercise 8: Write a query that returns the genus, species, plot type and average weights (rounded to two decimal places) for each species of individual captured, reported by species_ID and plot type and ordered from the lowest weight to the highest. Exclude all records that don't have weight values recorded.
 
-##Set operators
+## Set operators
 
 The set operators `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` can be used to compare the results from two `SELECT` statements. Note that the fields selected in the two queries must be identical in order for this to work. 
 
@@ -366,13 +366,13 @@ To use a set operator, write the two queries and combine them with the operator.
     
 ***Exercise 9: Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.
 
-##Adding data to existing tables
+## Adding data to existing tables
 
 * Browse & Search -> Add
 * Enter data into a csv file and append
 
 
-##Other database management systems
+## Other database management systems
 
 * Access or Filemaker Pro
     * GUI
@@ -414,9 +414,9 @@ The following table shows some common SQL data types. Different database platfor
 | XML |	Stores XML data |
 
 
-Source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
+Table source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
-##Resources
+## Resources
 [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)
 [Exercise Answer Key](http://amyehodge.github.io/Beginning_SQL/exercised_key.md)
 List some books available at the library 
