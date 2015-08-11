@@ -48,7 +48,7 @@ Let's try to combine what we've learned so far in a single query. Using the surv
 SELECT year, month, day, species_id, ROUND(weight/1000.0, 2)
 FROM surveys
 WHERE sex="F" AND year=1999
-ORDER BY species ASC;
+ORDER BY species_id ASC;
 ```
 
 #### Exercise 5
