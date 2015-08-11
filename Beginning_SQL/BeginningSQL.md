@@ -82,7 +82,7 @@ and search tab in the right hand section of the screen.
 
 You can also use this same approach to append new data to an existing table.
 
-##Relational databases and database design
+##<a name="design"></a>Relational databases and database design
 
 * Relational databases store data in tables with fields (columns) and records (rows)
 * The records are not in any particular order
@@ -267,34 +267,34 @@ Using the surveys table write a query to display the three date fields, species 
 
 ##Aggregation
 
-Aggregation allows us to combine results by grouping records based on value and calculating combined values in groups.
+Aggregation allows us to combine results by grouping records based on value and to calculate combined values in groups.
 
 Let’s go to the surveys table and find out how many individuals there are. Using the wildcard simply counts the number of records (rows)
 
     SELECT COUNT(*)
     FROM surveys;
 
-We can also find out how much all of those individuals weigh.
+We can also find out how much all of those individuals weigh by using the function `SUM`.
 
     SELECT COUNT(*), SUM(weight)
     FROM surveys;
 
-***Do you think you could output this value in kilograms, rounded to 3 decimal places?***
+Do you think you could output this value in kilograms, rounded to 3 decimal places?
 
     SELECT ROUND(SUM(weight)/1000.0, 3)
     FROM surveys;
 
-There are many other aggregate functions included in SQL including MAX, MIN, and AVG.
+There are many other aggregate functions included in SQL including `MAX`, `MIN`, and `AVG`.
 
 ***Exercise 5: From the surveys table, can we use one query to output the total weight, average weight, and the min and max weights?***
 
-Now, let's see how many individuals were counted in each species. We do this using a GROUP BY clause
+Now, let's see how many individuals were counted in each species. We do this using a `GROUP BY` clause.
 
     SELECT species_id, COUNT(*)
     FROM surveys
     GROUP BY species_id;
 
-GROUP BY tells SQL what field or fields we want to use to aggregate the data. If we want to group by multiple fields, we give GROUP BY a comma separated list.
+`GROUP BY` tells SQL what field or fields we want to use to aggregate the data. If we want to group by multiple fields, we give `GROUP BY` a comma separated list.
 
 ***EXERCISE 6: Write queries that return: 1. How many individuals were counted in each year. 2. Average weight of each species in each year***
 
@@ -308,17 +308,17 @@ We can order the results of our aggregation by a specific column, including the 
 
 ##Joins
 
-To combine data from two tables we use the SQL JOIN command, which comes after the FROM command.
+To combine data from two tables we use the SQL `JOIN` command, which comes after the `FROM` command.
 
-We also need to tell the computer which columns provide the link between the two tables using the word ON. What we want is to join the data with the same species codes.
+We will also need to use the keyword `ON` to tell the computer which columns provide the link ([Primary Key > Foreign Key](#design)) between the two tables. In this case, the species_id column in the species table is defined as the primary key. It contains the same data as the survey table's species_id column, which is the foreign key in this case.  We want to join the tables on these species_id fields.
 
     SELECT *
     FROM surveys
     JOIN species ON surveys.species_id = species.species_id;
 
-ON is like WHERE, it filters things out according to a test condition. We use the table.colname format to tell the manager what column in which table we are referring to.
+`ON` is kind of like `WHERE`, in that it filters things out according to a test condition. We use the table.colname format to tell the software what column in which table we are referring to.
 
-We often won't want all of the fields from both tables, so anywhere we would have used a field name in a non-join query, we can use *table.colname*
+We often won't want all of the fields from both tables, so anywhere we would have used a field name in a non-join query, we can use *table.colname*.
 
 For example, what if we wanted information on when individuals of each species were captured, but instead of their species ID we wanted their actual species names.
 
@@ -328,7 +328,7 @@ For example, what if we wanted information on when individuals of each species w
 
 ***Exercise 7: Write a query that returns the genus, the species, and the weight of every individual captured at the site***
 
-Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average mass of the individuals on each different type of treatment, we could do something like
+Joins can be combined with sorting, filtering, and aggregation. So, if we wanted average weight of the individuals on each different type of treatment, we could do something like
 
     SELECT plots.plot_type, AVG(surveys.weight)
     FROM surveys
@@ -336,6 +336,35 @@ Joins can be combined with sorting, filtering, and aggregation. So, if we wanted
     ON surveys.plot_id = plots.plot_id
     GROUP BY plots.plot_type;
 
+You can also combine many tables using a join. The query must include enough `JOIN`...`ON` clauses to link all of the tables together. All of the data in the three tables in our database can be displayed together using this query:
+
+    SELECT *
+    FROM surveys
+    JOIN plots ON surveys.plot_id = plots.plot_id
+    JOIN species ON species.species_id = surveys.species_id;
+
+***Exercise 8: Write a query that returns the genus, species, plot type and average weights (rounded to two decimal places) for each species of individual captured, reported by species_ID and plot type and ordered from the lowest weight to the highest. Exclude all records that don't have weight values recorded.
+
+##Set operators
+
+The set operators `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` can be used to compare the results from two `SELECT` statements. Note that the fields selected in the two queries must be identical in order for this to work. 
+
+    A UNION B will return all the distinct rows present to A & B
+    A ALL B will return all the rows present to A & B, including repetitions
+    A INTERSECT B will return all the rows common to A & B
+    A EXCEPT B will return all the rows present in A but not present in B
+
+To use a set operator, write the two queries and combine them with the operator. For example, this query will identify all the individuals that weight over 50g and that were female. Note that you could more easily and elegantly write this query without the set operator; this is only for example purposes.
+
+    SELECT species_id, plot_id, sex, weight 
+    FROM surveys
+    WHERE sex='F'
+    INTERSECT
+    SELECT species_id, plot_id, sex, weight
+    FROM surveys
+    WHERE weight>225;
+    
+***Exercise 9: Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.
 
 ##Adding data to existing tables
 
@@ -389,6 +418,7 @@ Source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
 ##Resources
 [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)
+[Exercise Answer Key](http://amyehodge.github.io/Beginning_SQL/exercised_key.md)
 List some books available at the library 
 Lists tutorials online, including codeacademy and lynda.com
 [SQLite tutorial[(http://www.tutorialspoint.com/sqlite/index.htm) on TutorialsPoint
