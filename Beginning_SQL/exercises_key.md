@@ -108,7 +108,7 @@ ORDER BY AVG(surveys.weight);
 ```
 
 ####Exercise 9
-Using a SET OPERATOR (EXCEPT) all the species found in 2000 but not in 2002, report back species
+Using a SET OPERATOR (EXCEPT), identify all the species found in 1977 but not in 2002, report back species
 
 ```
 SELECT DISTINCT species.genus, species.species, species.species_ID
