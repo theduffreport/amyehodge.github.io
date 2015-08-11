@@ -136,7 +136,7 @@ Or we can select all of the columns in a table using the wildcard "``*``".
 
     SELECT * FROM surveys;
 
-## Unique values
+### Unique values
 
 If we want only the unique values so that we can quickly see what species have been sampled we use the keyword ``DISTINCT``.
 
@@ -151,7 +151,7 @@ This is a good point to introduce another best practice for formatting SQL queri
     SELECT DISTINCT year, species_id
     FROM surveys;
 
-## Calculated values
+### Calculated values
 
 We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we could use this query:
 
@@ -239,6 +239,21 @@ We can also sort on several fields at once. To truly be alphabetical, we might w
 
 ***Exercise 3: Write a query that returns year, species, and weight in kg from the surveys table, sorted with the largest weights at the top***
 
+##Missing data
+
+`NULL` can be used in queries to represent missing data (note that this is not the same as true or false or 0).
+
+For example, to find all instances where the species_id was not entered, we can write this query:
+
+    SELECT * 
+    FROM surveys 
+    WHERE species_id IS NULL;
+
+Or to find all cases where a weight value was entered:
+
+    SELECT * 
+    FROM surveys 
+    WHERE weight IS NOT NULL;
 
 ##Order of execution vs. order of writing
 
@@ -258,7 +273,7 @@ The computer is basically doing this:
 4. Displaying requested columns or expressions according to `SELECT`
 
 
-When we write queries, SQL dictates the query parts be supplied in a particular order: `SELECT`, `FROM`, `WHERE`, `ORDER BY`. Note that this is not the same order in which the query is executed.
+When we write queries, SQL dictates the query parts be supplied in a particular order: `SELECT`, `FROM`, `JOIN...ON`, `WHERE`, `GROUP BY`, `ORDER BY`. Note that this is not the same order in which the query is executed. (We'll get to `JOIN...ON` and `GROUP BY` in a bit.)
 
 
 ***Exercise 4: Let's try to combine what we've learned so far in a single query.
