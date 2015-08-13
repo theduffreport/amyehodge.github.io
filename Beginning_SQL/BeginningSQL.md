@@ -445,4 +445,3 @@ Table source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.as
 		* [Foundations of Programming: Databases](http://www.lynda.com/Programming-tutorials/Foundations-Programming-Databases/112585-2.html)  
 	* [TutorialsPoint](http://www.tutorialspoint.com/sqlite/index.htm)  
 	* Or try some of the tutorials listed   [here](http://www.vertabelo.com/blog/notes-from-the-lab/18-best-online-resources-for-learning-sql-and-database). 
-* Library resources
