@@ -358,7 +358,7 @@ You can also combine many tables using a join. The query must include enough `JO
     JOIN plots ON surveys.plot_id = plots.plot_id
     JOIN species ON species.species_id = surveys.species_id;
 
-***Exercise 8: Write a query that returns the genus, species, plot type and average weights (rounded to two decimal places) for each species of individual captured, reported by species_ID and plot type and ordered from the lowest weight to the highest. Exclude all records that don't have weight values recorded.
+***Exercise 8: Write a query that returns the genus, species, plot type and average weights (rounded to two decimal places) for each species of individual captured, reported by species_ID and plot type and ordered from the lowest weight to the highest. Exclude all records that don't have weight values recorded.***
 
 ## Set operators
 
@@ -379,7 +379,7 @@ To use a set operator, write the two queries and combine them with the operator.
     FROM surveys
     WHERE weight>225;
     
-***Exercise 9: Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.
+***Exercise 9: Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.***
 
 ## Adding data to existing tables
 
@@ -432,17 +432,17 @@ The following table shows some common SQL data types. Different database platfor
 Table source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
 ## Resources
-[SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)
-[Exercise Answer Key](http://amyehodge.github.io/Beginning_SQL/exercised_key.md)
-List some books available at the library 
-### Online tutorials
-*[W3 Schools](http://www.w3schools.com/sql/)
-*[SQLZOO](http://sqlzoo.net/)
-*lynda.com training (free to everyone at Stanford!)
-**[Relational Database Fundamentals](http://www.lynda.com/Access-tutorials/Relational-Database-Fundamentals/145932-2.html)
-**[SQL Essential Training](http://www.lynda.com/SQL-tutorials/SQL-Essential-Training/139988-2.html)
-**[MySQL Essential Training](http://www.lynda.com/MySQL-tutorials/MySQL-Essential-Training/139986-2.html)
-**[Up and Running with MySQL Development](http://www.lynda.com/MySQL-tutorials/Up-Running-MySQL-Development/158373-2.html)
-**[Foundations of Programming: Databases](http://www.lynda.com/Programming-tutorials/Foundations-Programming-Databases/112585-2.html)
-[TutorialsPoint](http://www.tutorialspoint.com/sqlite/index.htm)
-Or try some of the tutorials listed [here](http://www.vertabelo.com/blog/notes-from-the-lab/18-best-online-resources-for-learning-sql-and-database).
+* [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)  
+* [Exercise Answer Key](http://amyehodge.github.io/Beginning_SQL/exercised_key.md)  
+* Online tutorials  
+	* [W3 Schools](http://www.w3schools.com/sql/)  
+	* [SQLZOO](http://sqlzoo.net/)  
+	* lynda.com training (free to everyone at Stanford!)  
+		* [Relational Database Fundamentals](http://www.lynda.com/Access-tutorials/Relational-Database-Fundamentals/145932-2.html)  
+		* [SQL Essential Training](http://www.lynda.com/SQL-tutorials/SQL-Essential-Training/139988-2.html)  
+		* [MySQL Essential Training](http://www.lynda.com/MySQL-tutorials/MySQL-Essential-Training/139986-2.html)  
+		* [Up and Running with MySQL Development](http://www.lynda.com/MySQL-tutorials/Up-Running-MySQL-Development/158373-2.html)  
+		* [Foundations of Programming: Databases](http://www.lynda.com/Programming-tutorials/Foundations-Programming-Databases/112585-2.html)  
+	* [TutorialsPoint](http://www.tutorialspoint.com/sqlite/index.htm)  
+	* Or try some of the tutorials listed   [here](http://www.vertabelo.com/blog/notes-from-the-lab/18-best-online-resources-for-learning-sql-and-database). 
+* Library resources
