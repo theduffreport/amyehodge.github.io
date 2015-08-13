@@ -1,8 +1,15 @@
 #Workshop: Beginning SQL
 
-This workshop will teach the basics of working with and querying structured data in a database environment. This workshop uses the SQLite plugin for Firefox. We will provide laptops with the correct software for the workshop. If you bring your own machine to the workshop, you must have the software installed in advance. 
+This workshop will teach the basics of working with and querying structured data in a database environment. This workshop uses the SQLite plugin for Firefox. We will provide laptops with the correct software for the workshop. If you bring your own machine to the workshop, you must have the software installed in advance.
 
-## Software and Data Setup
+##Contents
+
+1. [Software and data setup](#software)
+2. [Dataset description](#dataset)
+3. [Import data into SQLite](#import)
+4. [Relational databases and database design](#design)
+
+##<a name="software"></a> Software and data setup
 
 > *If you are using one of the Library's laptops, skip this section.*
 
@@ -14,7 +21,7 @@ Manager -> Install -> Restart now**
 3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.csv), and [surveys](http://files.figshare.com/1919744/surveys.csv).
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
-## Dataset Description
+##<a name="dataset"></a> Dataset description
 
 The data we will be using is a time-series for a small mammal community in
 southern Arizona. This is part of a project studying the effects of rodents and
@@ -27,7 +34,7 @@ simplified it a little bit for the workshop, but you can download the
 [full dataset](http://esapubs.org/archive/ecol/E090/118/) and work with it using
 exactly the same tools we'll learn about today.
 
-## Import Data into SQLite
+##<a name="import"></a> Import data into SQLite
 
 We are going to start by importing the data tables that we want to use in our database.
 
@@ -97,7 +104,7 @@ You can also use this same approach to append new data to an existing table.
 * Queries let us look up data or make calculations based on the fields of data.
 
 
-## Why use relational databases
+##<a name="whyuse"></a> Why use relational databases
 
 * Data separate from analysis.
   * There is no risk of accidentally changing data when analyzing it.
@@ -105,12 +112,12 @@ You can also use this same approach to append new data to an existing table.
 * It's fast for large amounts of data.
 * It improves quality control of data entry: it's possible to constrain types, which is especially easy if you use forms available in database programs like Access, Filemaker, etc.
 
-## Database Management Systems
+##<a name="dbms"></a> Database management systems
 
 There are a number of different database management systems for working with relational data. We're going to use SQLite today, but basically everything we teach you will apply to the other database systems as well (e.g., MySQL, PostgreSQL, MS Access, Filemaker Pro). The differences between these are mostly in the details of exactly how to import and export data, the specific data types, and nuances of how the queries are written.
 
 
-## Basic queries
+##<a name="basic"></a> Basic queries
 To write a query, click on the Execute SQL tab from within any of your database tables.
 
 ![Execute SQL](http://amyehodge.github.io/Beginning_SQL/images/BSQL5.png "Execute SQL")  
@@ -136,7 +143,7 @@ Or we can select all of the columns in a table using the wildcard "``*``".
 
     SELECT * FROM surveys;
 
-### Unique values
+###<a name="unique"></a> Unique values
 
 If we want only the unique values so that we can quickly see what species have been sampled we use the keyword ``DISTINCT``.
 
@@ -151,7 +158,7 @@ This is a good point to introduce another best practice for formatting SQL queri
     SELECT DISTINCT year, species_id
     FROM surveys;
 
-### Calculated values
+###<a name="calcluated"></a> Calculated values
 
 We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we could use this query:
 
@@ -167,7 +174,7 @@ Expressions can use any fields, any arithmetic operators (+ - * /) and a variety
 
 ***EXERCISE 1: Write a query that returns the year, month, day, species ID, and weight in mg***
 
-## Filtering
+##<a name="filtering"></a> Filtering
 
 Databases can also filter data – selecting only the data meeting certain criteria. For example, let’s say we only want data for the species [Dipodomys merriami](https://en.wikipedia.org/wiki/Merriam%27s_kangaroo_rat), which has a species code of DM. We need to add a `WHERE` clause to our query:
 
@@ -198,13 +205,13 @@ If we wanted to get data for any of the Dipodomys species, which have species co
 ***EXERCISE 2: Write a query that returns the day, month, year, species ID, and weight (in kg) for individuals caught on Plot 1 that weigh more than 75 g***
 
 
-## Exporting & saving query results
+##<a name="exportsave"></a> Exporting & saving query results
 
 * Export Results:  To export your results into a saved file on your computer, click on the button next to **Actions** and choose **Save Result to File**. This file is not queriable.
 * Save Results: To save your results as a special kind of table called a view, click on **View** in the main menu and choose **Create View**. You can view and query this special table in SQLite.
 
 
-## Building more complex queries
+##<a name="complex"></a> Building more complex queries
 
 Now, let's combine the above queries to get data for the three Dipodomys species starting from the year 2000. This time, let’s use `IN` as one way to make the query easier to understand. `IN` is equivalent to saying `WHERE (species_id = "DM") OR (species_id = "DO") OR (species_id = "DS")`, but reads more neatly:
 
@@ -215,7 +222,7 @@ Now, let's combine the above queries to get data for the three Dipodomys species
 We started with something simple, then added more clauses one by one, testing their effects as we went along. For complex queries, this is a good strategy to make sure you are getting what you want. It also might be helpful to create a subset of the data that you can easily see in a temporary database to practice your queries on before working on a larger or more complicated database.
 
 
-## Sorting
+##<a name="sort"></a> Sorting
 
 We can also sort the results of our queries by using `ORDER BY`. For simplicity, let’s go back to the **species** table and alphabetize it by taxa.
 
@@ -239,7 +246,7 @@ We can also sort on several fields at once. To truly be alphabetical, we might w
 
 ***Exercise 3: Write a query that returns year, species, and weight in kg from the surveys table, sorted with the largest weights at the top***
 
-##Missing data
+##<a name="missing"></a>Missing data
 
 `NULL` can be used in queries to represent missing data (note that this is not the same as true or false or 0).
 
@@ -255,7 +262,7 @@ Or to find all cases where a weight value was entered:
     FROM surveys 
     WHERE weight IS NOT NULL;
 
-##Order of execution vs. order of writing
+##<a name="order"></a>Order of execution vs. order of writing
 
 Another note for ordering. We don’t actually have to display a column to sort by it. For example, let’s say we want to order by the species ID, but we only want to see genus and species.
 
@@ -280,7 +287,7 @@ When we write queries, SQL dictates the query parts be supplied in a particular 
 Using the surveys table write a query to display the three date fields, species ID, and weight in kilograms (rounded to two decimal places), for rodents captured in 1999, ordered alphabetically by the species ID.***
 
 
-## Aggregation
+##<a name="aggregation"></a> Aggregation
 
 Aggregation allows us to combine results by grouping records based on value and to calculate combined values in groups.
 
@@ -321,7 +328,7 @@ We can order the results of our aggregation by a specific column, including the 
     ORDER BY COUNT(species_id);
 
 
-## Joins
+##<a name="joins"></a> Joins
 
 To combine data from two tables we use the SQL `JOIN` command, which comes after the `FROM` command.
 
@@ -360,7 +367,7 @@ You can also combine many tables using a join. The query must include enough `JO
 
 ***Exercise 8: Write a query that returns the genus, species, plot type and average weights (rounded to two decimal places) for each species of individual captured, reported by species_ID and plot type and ordered from the lowest weight to the highest. Exclude all records that don't have weight values recorded.***
 
-## Set operators
+##<a name="sets"></a> Set operators
 
 The set operators `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` can be used to compare the results from two `SELECT` statements. Note that the fields selected in the two queries must be identical in order for this to work. 
 
@@ -380,22 +387,6 @@ To use a set operator, write the two queries and combine them with the operator.
     WHERE weight>225;
     
 ***Exercise 9: Write a query to identify all the species (by genus, species, and species_id) found in 1977 but not in 2002.***
-
-## Adding data to existing tables
-
-* Browse & Search -> Add
-* Enter data into a csv file and append
-
-
-## Other database management systems
-
-* Access or Filemaker Pro
-    * GUI
-    * Forms w/QAQC
-	* But not cross-platform
-* MySQL/PostgreSQL
-    * Multiple simultaneous users
-	* More difficult to setup and maintain
 
 
 ##<a name="datatypes"></a> Data types
@@ -431,7 +422,7 @@ The following table shows some common SQL data types. Different database platfor
 
 Table source: [W3 Schools](http://www.w3schools.com/sql/sql_datatypes_general.asp)
 
-## Resources
+##<a name="resources"></a> Resources
 * [SQL Cheat Sheet](http://amyehodge.github.io/Beginning_SQL/SQL_cheat_sheet.md)  
 * [Exercise Answer Key](http://amyehodge.github.io/Beginning_SQL/exercised_key.md)  
 * Online tutorials  
