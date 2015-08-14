@@ -8,6 +8,20 @@ This workshop will teach the basics of working with and querying structured data
 2. [Dataset description](#dataset)
 3. [Import data into SQLite](#import)
 4. [Relational databases and database design](#design)
+5. [Why use relational databases](#whyuse)
+6. [Database management systems](#dbms)
+7. [Basic queries](#basic), including [Unique values](#unique) and [Calculated values](#calculated)
+8. [Filtering](#filtering)
+9. [Exporting & saving query results](#exportsave)
+10. [Building more complex queries](#complex)
+11. [Sorting](#sort)
+12. [Missing data](#missing)
+13. [Order of execution vs order of query](#order)
+14. [Aggregation](#aggregation)
+15. [Joins](#joins)
+16. [Set operators](#sets)
+17. [Data types](#datatypes)
+18. [Resources](#resources)
 
 ##<a name="software"></a> Software and data setup
 
@@ -158,7 +172,7 @@ This is a good point to introduce another best practice for formatting SQL queri
     SELECT DISTINCT year, species_id
     FROM surveys;
 
-###<a name="calcluated"></a> Calculated values
+###<a name="calculated"></a> Calculated values
 
 We can also do calculations with the values in a query. For example, if we wanted to look at the mass of each individual on different dates, but we needed it in kg instead of g we could use this query:
 
@@ -262,7 +276,7 @@ Or to find all cases where a weight value was entered:
     FROM surveys 
     WHERE weight IS NOT NULL;
 
-##<a name="order"></a>Order of execution vs. order of writing
+##<a name="order"></a>Order of execution vs. order of query
 
 Another note for ordering. We don’t actually have to display a column to sort by it. For example, let’s say we want to order by the species ID, but we only want to see genus and species.
 
