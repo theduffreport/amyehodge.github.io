@@ -3,20 +3,20 @@ The UNIX shell is a great tool for automating relatively simple tasks. This work
 
 
 ##The problem
-I wanted to be able to compare the content of two separate reports run on different days (file1.csv and file2.csv) to identify content that was of interest to me. These reports contain information on cummulative activity over time, and I am just interested in a specific subset of that data:  
-* new since last time  
-* not still processing (Status should only be listed as "Accessioned")  
-* not from one particular group (this corresponds to two particular users who are specified within the Source ID field: dhartwig and jejohns).  
+I wanted to be able to compare the content of two separate reports run on different days (file1.csv and file2.csv) to identify content that was of interest to me. These reports contain information on cumulative activity over time, and I am just interested in a specific subset of that data:  
+1. new since last time  
+2. not still processing (Status should only be listed as "Accessioned")  
+3. not from one particular group (this corresponds to two particular users who are specified within the Source ID field: dhartwig and jejohns).  
 
 Also, I wanted to do this on a weekly basis, comparing this week's report with last week's report.
 
 ##Spreadsheets
 I first considered whether it would be possible to do this in a spreadsheet.     
-1. You could try comparing the two spreadsheets to each other, but 4500+ lines is a lot to compare.
-2. You could try sorting it first, which might make it easier.
-3. You could try putting all of the content from both sheets into the same sheet, maybe sorting on that and trying to elimiate the duplicates.
-4. You could use some filters on this combined sheet to eliminate some things, but this is also slow.
-5. I might be able to identify duplicates with conditional formatting, but this is not easy to do when you need to compare the entire row.
+1. You could try comparing the two spreadsheets to each other, but 4500+ lines is a lot to compare.  
+2. You could try sorting it first, which might make it easier.  
+3. You could try putting all of the content from both sheets into the same sheet, maybe sorting on that and trying to eliminate the duplicates.  
+4. You could use some filters on this combined sheet to eliminate some things, but this is also slow.  
+5. I might be able to identify duplicates with conditional formatting, but this is not easy to do when you need to compare the entire row.  
 6. In the end I still need to go through the spreadsheet by hand to eliminate duplicates. 
 
 Let's try the shell!    
@@ -26,18 +26,20 @@ The UNIX shell is a command-line interpreter that provides an interface for the 
 
 In this workshop we aren't going to cover everything about the shell. I'm just going to introduce a few basic things to you that will let us do this particular task, so that you can get a feel for what this can do.
 
+##Solving our problem
+
 ### Select the data that is done processing.
 
 I started by eliminating everything that hasn't yet finished processing, so that's anything that does not have "Accessioned" in the status column.
 
-    COMMAND: grep
-    Let's you search for contents within a file.
-    Flag: -i
-    Does this in a case-insensitive way
+> COMMAND: grep  
+> Let's you search for contents within a file.  
+> Flag: -i  
+> Does this in a case-insensitive way  
     
 The grep command identifies lines within your file that match a pattern. This is exactly what I want: I want to keep the entire line, when a particular word ("accessioned") is identified within that line. I'm not 100% sure that the word is always capitalized so I'm going to use a flag.
 
-Flags are additional options that alter the default behavior of a command. The default behavior of this command is case sensistive. I want to make it case insensitive.
+Flags are additional options that alter the default behavior of a command. The default behavior of this command is case sensitive. I want to make it case insensitive.
 
     grep -i "accessioned" file1.csv
 
