@@ -32,7 +32,7 @@ This workshop will teach the basics of working with and querying structured data
 top right corner of Firefox) -> Add-ons -> Search -> SQLite
 Manager -> Install -> Restart now**
 4. Add SQLite Manager to the menu: **Menu -> Customize, then drag the SQLite Manager icon to one of the empty menu squares on the right, Exit Customize**
-3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919742/species.csv), and [surveys](http://files.figshare.com/1919744/surveys.csv).
+3. Download the [Portal Database](http://files.figshare.com/1919743/portal_mammals.sqlite) as well as the individual csv files for [plots](http://files.figshare.com/1919738/plots.csv), [species](http://files.figshare.com/1919741/species.csv), and [surveys](http://files.figshare.com/1919744/surveys.csv).
 5. Open SQLite Manager: **Menu -> SQLite Manager**
 
 ##<a name="dataset"></a> Dataset description
