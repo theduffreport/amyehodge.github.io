@@ -55,14 +55,14 @@ We are going to start by importing the data tables that we want to use in our da
 1. Start a New Database **Database -> New Database**
 2. Name your database and save it to the desktop
 3. Import your data tables into your database by selecting **Database -> Import**
-4. Click on the **Select File** and choose the csv file you want to import
+4. Click on the **Select File** and choose the plots.csv file
 5. Give the table a name (or use the default)
 6. If the the file has column headings in the first row, check the appropriate box (our tables have column headings in the first row)
 7. Make sure the delimiter and quotation options are correct (our tables use a comma delimiter and double quotes)
 
 ![Setting import options](http://amyehodge.github.io/Beginning_SQL/images/BSQL1.png "Setting import options")  
 
-8. Press **OK**
+Click **OK**.
 
 When asked if you want to modify the table, click **OK** and then set the data types for each column (field) as indicated below.
 
@@ -181,7 +181,7 @@ We can also do calculations with the values in a query. For example, if we wante
 
 When we run the query, the expression `weight/1000.0` is evaluated for each row and appended to that row, in a new column. Note that because weight is an integer, if we divide by the integer 1000, the results will be reported as integers. In order to get more significant digits, you need to include the decimal point so that SQL knows you want the results reported as floating point numbers. 
 
-Expressions can use any fields, any arithmetic operators (+ - * /) and a variety of built-in functions (). For example, we could round the values to make them easier to read.
+Expressions can use any fields, any arithmetic operators (+ - * /) and a variety of built-in functions (MAX, MIN, AVG, SUM, ROUND, UCASE, LCASE, LEN, etc). For example, we could round the values to make them easier to read.
 
     SELECT plot_id, species_ID, sex, weight, ROUND(weight/1000.0, 2)
     FROM surveys;
@@ -208,7 +208,7 @@ We can use more sophisticated conditions by combining filters with AND as well a
     FROM surveys 
     WHERE (year >= 2000) AND (species_id = "DM");
 
-Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines `AND` and `O`R in the way that we intend. (`AND` takes precedence over `OR` and will be evaluated before `OR`.)
+Note that the parentheses aren’t needed in this case, but again, they help with readability. They also ensure that the computer combines `AND` and `OR` in the way that we intend. (`AND` takes precedence over `OR` and will be evaluated before `OR`.)
 
 If we wanted to get data for any of the Dipodomys species, which have species codes DM, DO, and DS, we could combine the tests using OR:
 
@@ -244,7 +244,7 @@ We can also sort the results of our queries by using `ORDER BY`. For simplicity,
     FROM species 
     ORDER BY taxa ASC;
 
-The keyword `AS`C tells us to order it in Ascending order. We could alternately use `DESC` to get descending order.
+The keyword `ASC` tells us to order it in Ascending order. We could alternately use `DESC` to get descending order.
 
     SELECT * 
     FROM species 
