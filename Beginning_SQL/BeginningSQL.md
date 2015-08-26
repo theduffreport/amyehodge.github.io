@@ -50,7 +50,18 @@ exactly the same tools we'll learn about today.
 
 ##<a name="import"></a> Import data into SQLite
 
-We are going to start by importing the data tables that we want to use in our database.
+We can import our data in one of two ways:  
+1. Import the .sqlite database file  
+2. Import the individual tables  
+
+For this workshop we will start with the database file, because it's quicker. But instructions are included below for importing the individual tables as well.
+
+###Import the database file
+
+1. Select **Database -> Connect Database**
+2. Choose the portal_mammals.sqlite file
+
+###Import the individual tables
 
 1. Start a New Database **Database -> New Database**
 2. Name your database and save it to the desktop
